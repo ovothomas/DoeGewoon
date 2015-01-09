@@ -1,16 +1,27 @@
 package nl.mprog.setup.mproject10173072;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends ActionBarActivity {
+public class TaskActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_task);
+		
+		//adding fragment in activity
+		FragmentManager fm = getSupportFragmentManager();
+		Fragment frag = fm.findFragmentById(R.id.fragmentContainer);
+		
+		if (frag == null){
+			frag = new TaskFragment();
+			fm.beginTransaction().add(R.id.fragmentContainer, frag).commit();
+		}
 	}
 
 	@Override
