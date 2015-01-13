@@ -1,5 +1,7 @@
 package nl.mprog.setup.mproject10173072;
 
+import java.util.UUID;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,14 +16,26 @@ public class TaskActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_task);
 		
-		//adding fragment in activity
+		//adding fragment in activity and calling support library 
+		//to call getSupportFragmentManager
 		FragmentManager fm = getSupportFragmentManager();
 		Fragment frag = fm.findFragmentById(R.id.fragmentContainer);
 		
+		// if there is no fragment create new one
 		if (frag == null){
-			frag = new TaskFragment();
+			frag = createFragment();
 			fm.beginTransaction().add(R.id.fragmentContainer, frag).commit();
 		}
+	}
+	
+	protected Fragment createFragment() {
+		
+		//retrieve the extra from CrimeActivity's intent 
+		//and pass it into CrimeFragment.newInstance(UUID).
+		UUID taskId = (UUID)getIntent()
+				.getSerializableExtra(TaskFragment.EXTRA_TASK_ID);
+		
+		return TaskFragment.newInstance(taskId);
 	}
 
 	@Override

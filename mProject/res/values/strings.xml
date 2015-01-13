@@ -5,5 +5,12 @@
     <string name="action_settings">Settings</string>
     <string name="task_title_hint">Add a task</string>
     <string name="title_activity_task">TaskActivity</string>
+    <string name="task_label_title">Title</string>
+    <string name="details_label">Details</string>
+    <string name="task_completed_label">Completed</string>
+    <string name="task_detail_hint">Enter Details here</string>
+    <string name="title_activity_task_list">TaskListActivity</string>
+    <string name="task_title">Tasks</string>
+    
 
 </resources>

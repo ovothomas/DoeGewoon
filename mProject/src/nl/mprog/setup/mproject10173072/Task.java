@@ -1,18 +1,50 @@
 package nl.mprog.setup.mproject10173072;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class Task {
 	
+	/*
+	 * This is an instance of a single task when it 
+	 * is created. Task has unique identifier, a title,
+	 * an editbox in which the task details will be
+	 * stored, date and if the task is completed.
+	 */
+	
 	//creating members
 	private UUID mId;
 	private String mTaskTitle;
+	private Date mTaskDate;
+	private boolean mCompleted;
+	private String mTaskDetails;
 	
 	public Task(){
 		
 		// generate Id's for the tasks
-		mId = UUID.randomUUID(); 
-		
+		mId = UUID.randomUUID();
+		mTaskDate = new Date();
+	}
+	
+	@Override
+	public String toString(){
+		return mTaskTitle;
+	}
+
+	public Date getTaskDate() {
+		return mTaskDate;
+	}
+
+	public void setTaskDate(Date taskDate) {
+		mTaskDate = taskDate;
+	}
+
+	public boolean isCompleted() {
+		return mCompleted;
+	}
+
+	public void setCompleted(boolean completed) {
+		mCompleted = completed;
 	}
 
 	public String getTaskTitle() {
@@ -25,5 +57,13 @@ public class Task {
 
 	public UUID getId() {
 		return mId;
+	}
+
+	public String getTaskDetails() {
+		return mTaskDetails;
+	}
+
+	public void setTaskDetails(String taskDetails) {
+		mTaskDetails = taskDetails;
 	}
 }

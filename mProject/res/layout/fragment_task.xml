@@ -4,10 +4,67 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <TextView 
+        android:layout_height ="wrap_content"
+        android:layout_width ="match_parent"
+        android:text = "@string/task_label_title"
+        style="?android:listSeparatorTextViewStyle"/>
+    
     <EditText 
         android:id="@+id/task_title"
-        android:layout_width = "match_parent"
+        android:lines="1"
+        android:layout_width ="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/task_title_hint"/>
+        android:hint="@string/task_title_hint"
+        android:layout_marginLeft = "16dp"
+        android:layout_marginRight = "16dp"
+        />
+    
+    <Button 
+        android:id="@+id/task_date"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+	/>
+    
+     <Button 
+        android:id="@+id/task_time"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+	/>
+     
+	<CheckBox 
+	  	android:id="@+id/task_completed"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:text="@string/task_completed_label"
+	/>
+    
+    <TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/details_label"
+		style="?android:listSeparatorTextViewStyle"
+	/>
+     
+   
+	
+	<EditText 
+	    android:inputType="textMultiLine"
+	    android:lines="8"
+	    android:minLines="6"
+	    android:gravity="top|left"
+        android:id="@+id/task_details"
+        android:layout_width = "fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/task_detail_hint"
+        android:layout_marginLeft = "16dp"
+        android:layout_marginRight = "16dp"/>
+    
 
 </LinearLayout>
