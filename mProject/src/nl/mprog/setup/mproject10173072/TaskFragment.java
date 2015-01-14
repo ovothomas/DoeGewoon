@@ -44,6 +44,7 @@ public class TaskFragment extends Fragment implements OnDateSetListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		// call getArguments() to access its arguments of the fragment being created
 		UUID taskId = (UUID)getArguments().getSerializable(EXTRA_TASK_ID);
 		mTask = TaskStorage.get(getActivity()).getTask(taskId);
 		
@@ -145,11 +146,13 @@ public class TaskFragment extends Fragment implements OnDateSetListener {
 		return view;
 	}
 	
+	// Attach arguments bundle to a fragment
 	public static TaskFragment newInstance(UUID taskId){
 		
 		Bundle args = new Bundle();
 		args.putSerializable(EXTRA_TASK_ID, taskId);
 		
+		// create Fragment instance of that particular id
 		TaskFragment fragment = new TaskFragment();
 		fragment.setArguments(args);
 		
@@ -161,7 +164,5 @@ public class TaskFragment extends Fragment implements OnDateSetListener {
 	public void onDateSet(DatePicker view, int year, int monthOfYear,
 			int dayOfMonth) {
 		// TODO Auto-generated method stub
-		 
-		
 	}
 }

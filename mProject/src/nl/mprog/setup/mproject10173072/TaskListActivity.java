@@ -38,6 +38,7 @@ public class TaskListActivity extends ListActivity {
 		
 		//Start TaskpagerActivity and putExtra Id of the particular fragment
 		Intent i = new Intent(this, TaskPagerActivity.class);
+		// tell TaskFragment which task to display by making the TaskId an Intent extra
 		i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
 		startActivity(i);
 		
