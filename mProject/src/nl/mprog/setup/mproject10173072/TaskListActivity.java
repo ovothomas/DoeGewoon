@@ -8,18 +8,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class TaskListActivity extends ListActivity {
 	private ArrayList<Task> mTasks;
+	private Button mTaskButton;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_task_list);
 		
 		//configuring the actionbar
 		getActionBar().setTitle(R.string.task_title);
@@ -29,6 +34,16 @@ public class TaskListActivity extends ListActivity {
 		mTasks = TaskStorage.get(getBaseContext()).getTasks();
 		TaskAdapter adapter = new TaskAdapter(this, mTasks);
 		setListAdapter(adapter);
+		
+		mTaskButton = (Button)findViewById(R.id.button_add_task);
+		mTaskButton.setOnClickListener(new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				createTask();
+			}
+		});
 	}
 	
 	@Override
@@ -45,8 +60,8 @@ public class TaskListActivity extends ListActivity {
 	}
 	
 	// Creating a custom adapter to populate the listview
-	private class TaskAdapter extends ArrayAdapter<Task>{
-		
+	private class TaskAdapter extends ArrayAdapter<Task>{		
+
 		public TaskAdapter(Context context, ArrayList<Task> tasks){
 			
 			super(context, 0, tasks);
@@ -58,7 +73,7 @@ public class TaskListActivity extends ListActivity {
 		Task task = getItem(position);
 		//Check if an existing view is being reused, otherwise inflate the view
 		if (convertView == null){
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_task_list, parent, false);
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_task_row, parent, false);
 		}
 		
 		//look for the view to populate with data
@@ -78,12 +93,41 @@ public class TaskListActivity extends ListActivity {
 	}
 	
 	/*
-	 * Notify the listadapter when particular crimeFragment is
+	 * Notify the listadapter when particular TaskFragment is
 	 * configured
 	 */
 	@Override
 	public void onResume(){
 		super.onResume();
 		((TaskAdapter)getListAdapter()).notifyDataSetChanged();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.task_list, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_add_new_task) {
+			createTask();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	// create Task function
+	public void createTask(){
+		Task task = new Task();
+		TaskStorage.get(getBaseContext()).addTask(task);
+		Intent i = new Intent(getBaseContext(), TaskPagerActivity.class);
+		i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
+		startActivityForResult(i, 0);
 	}
 }

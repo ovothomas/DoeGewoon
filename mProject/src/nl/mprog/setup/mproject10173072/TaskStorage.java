@@ -14,14 +14,13 @@ public class TaskStorage {
 	
 	
 	private TaskStorage(Context appContext){
-		
-		// filling my arraylist with random task.
+		// creating an arraylist
 		mTasks = new ArrayList<Task>();
-		for (int i = 1; i < 20; i++){
-			Task context = new Task();
-			context.setTaskTitle("Task #" + i);
-			mTasks.add(context);
-		}
+	}
+	
+	//add a new task
+	public void addTask(Task task){
+		mTasks.add(task);
 	}
 	
 	// return the task from the arraylist

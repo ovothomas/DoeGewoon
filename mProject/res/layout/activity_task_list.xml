@@ -1,39 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".CrimeListActivity" >
-
-    <CheckBox
-        android:id="@+id/task_completed_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:enabled="false"
-        android:focusable="false"
-        android:gravity="center"
-        android:padding="4dp" />
-
-    <TextView
-        android:id="@+id/task_titleTextView"
+    android:layout_height="match_parent" >
+   
+    <LinearLayout 
+        android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/task_completed_checkbox"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:text="Crime title"
-        android:textStyle="bold" />
+        android:layout_gravity="top"
+        android:orientation="horizontal">
+        
+        <TextView
+         	android:id="@+id/empty_text_view"
+         	android:layout_width="wrap_content"
+         	android:layout_height="wrap_content"
+         	 android:layout_weight="1"
+	        android:gravity="center"
+	        android:paddingLeft="4dp"
+	         android:paddingRight="4dp"
+	        android:text="@string/text_view"/>
+        
+        <Button
+            android:id="@+id/button_add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="70dp"
+            android:text="@string/add_task_button" />
+        
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/task_dateTextView"
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/task_titleTextView"
-        android:layout_toRightOf="@id/task_completed_checkbox"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingTop="4dp"
-        android:text="Crime date" />
+        android:layout_height="match_parent" >
+    </ListView>
 
-</RelativeLayout>
+</FrameLayout>
