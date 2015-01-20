@@ -39,6 +39,10 @@ public class TaskFragment extends Fragment {
 	private Button mTaskDateButton;
 	private CheckBox mTaskCompletedCheckBox;
 	private Button mTaskTimeButton;
+	private Button mAddTask;
+	
+	// SQL Database
+	private TaskDAO mDatabase;
 	
 	
 	private void updateTime(){
@@ -52,6 +56,8 @@ public class TaskFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		
+		mDatabase = new TaskDAO(getActivity());
 		
 		//Enabling the app icon as Up button 
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,58 +78,12 @@ public class TaskFragment extends Fragment {
 		// Wiring up EditText to respond to user input
 		mTaskDetails = (EditText)view.findViewById(R.id.task_details);
 		mTaskDetails.setText(mTask.getTaskDetails());
-		mTaskDetails.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				mTask.setTaskDetails(s.toString());
-				
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
+		
 		
 		//Wiring up the edittext to respond to user input
 		mTaskTitle = (EditText)view.findViewById(R.id.task_title);
 		mTaskTitle.setText(mTask.getTaskTitle());
-		mTaskTitle.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				mTask.setTaskTitle(s.toString());
-				
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
+		
 		
 		//Setting and wiring completed checkbox
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
@@ -154,7 +114,7 @@ public class TaskFragment extends Fragment {
 		//setting up timeButton to show the time the task was made
 		mTaskTimeButton = (Button)view.findViewById(R.id.task_time);
 		updateTime();
-		mTaskTimeButton.setEnabled(false);
+		//mTaskTimeButton.setEnabled(false);
 		mTaskTimeButton.setOnClickListener(new View.OnClickListener(){
 
 			@Override
@@ -165,6 +125,20 @@ public class TaskFragment extends Fragment {
 				dialog.setTargetFragment(TaskFragment.this, REQUEST_TIME);
 				dialog.show(timepicker, DPDIALOG_TIME);
 			}
+		});
+		
+		mAddTask = (Button)view.findViewById(R.id.addButton);
+		mAddTask.setOnClickListener(new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), TaskListActivity.class);
+				startActivity(intent);
+				//finish();
+				 
+			}
+			 
 		});
 		
 		return view;

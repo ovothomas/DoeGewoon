@@ -47,6 +47,10 @@ public class Task {
 		mCompleted = completed;
 	}
 
+	public void setId(UUID id) {
+		mId = id;
+	}
+
 	public String getTaskTitle() {
 		return mTaskTitle;
 	}

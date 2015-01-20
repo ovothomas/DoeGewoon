@@ -43,21 +43,15 @@ public class TimePickerFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState){
 		// get the time
 		mTime = (Date)getArguments().getSerializable(EXTRA_TIME);
-		// get the current time as the default values for the picker
-		//final Calendar calendar = Calendar.getInstance();
-		//calendar.setTime(mTime);
-		//mHour = calendar.get(Calendar.HOUR_OF_DAY);
-		//mMinute = calendar.get(Calendar.MINUTE);
-		
 		
 		TimePickerDialog timepicker = new TimePickerDialog(getActivity(), new
 				OnTimeSetListener(){
-
+					
 					@Override
 					public void onTimeSet(TimePicker view, int hourOfDay,
 							int minute) {
 						// TODO Auto-generated method stub
-						mTime = new GregorianCalendar(0, 0, 0, mHour, mMinute).getTime();
+						mTime = new GregorianCalendar(0, 0, 0, hourOfDay, minute).getTime();
 						sendResult(Activity.RESULT_OK);
 					}
 		}, mHour, mMinute,false);
