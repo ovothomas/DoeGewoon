@@ -13,7 +13,7 @@ public class Task {
 	 */
 	
 	//creating members
-	private UUID mId;
+	private Long mId;
 	private String mTaskTitle;
 	private Date mTaskDate;
 	private boolean mCompleted;
@@ -22,7 +22,6 @@ public class Task {
 	public Task(){
 		
 		// generate Id's for the tasks
-		mId = UUID.randomUUID();
 		mTaskDate = new Date();
 	}
 	
@@ -47,7 +46,7 @@ public class Task {
 		mCompleted = completed;
 	}
 
-	public void setId(UUID id) {
+	public void setId(Long id) {
 		mId = id;
 	}
 
@@ -59,7 +58,7 @@ public class Task {
 		mTaskTitle = taskTitle;
 	}
 
-	public UUID getId() {
+	public Long getId() {
 		return mId;
 	}
 

@@ -12,6 +12,8 @@ public class TaskDataBaseHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_TITLE = "title";
 	public static final String COLUMN_TASK_ID = "_id";
 	public static final String COLUMN_TASK_DETAILS = "details";
+	public static final String COLUMN_TASK_DATE = "date";
+	public static final String COLUMN_TASK_TIME = "time";
 	
 	public static final String DATABASE_NAME = "taskdatabase.db";
 	public static final int DATABASE_VERSION = 1 ;

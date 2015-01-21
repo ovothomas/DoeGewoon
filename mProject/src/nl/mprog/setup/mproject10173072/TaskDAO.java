@@ -2,7 +2,6 @@ package nl.mprog.setup.mproject10173072;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -72,7 +71,7 @@ public class TaskDAO {
 	}
 	
 	public void deleteTask(Task task){
-		UUID id = task.getId();
+		long id = task.getId();
 		System.out.println("the deleted company has the id: " + id);
 		mDatabase.delete(TaskDataBaseHelper.TABLE_TASK, TaskDataBaseHelper.COLUMN_TASK_ID
 				+ " = " + id, null);
@@ -97,7 +96,7 @@ public class TaskDAO {
 		
 	}
 	
-	public Task getTaskById(UUID id) {
+	public Task getTaskById(Long id) {
 		Cursor cursor = mDatabase.query(TaskDataBaseHelper.TABLE_TASK, mAllColumns,
 				TaskDataBaseHelper.COLUMN_TASK_ID + " = ?",
 				new String[] { String.valueOf(id) }, null, null, null);
@@ -109,6 +108,17 @@ public class TaskDAO {
 		return task;
 	}
 	
+	public boolean updateRow(Long rowId, String title, String details) {
+		String where = TaskDataBaseHelper.COLUMN_TASK_ID + "=" + rowId;
+
+		ContentValues newValues = new ContentValues();
+		newValues.put(TaskDataBaseHelper.COLUMN_TITLE, title);
+		newValues.put(TaskDataBaseHelper.COLUMN_TASK_DETAILS, details);
+		
+		// Insert it into the database.
+		return mDatabase.update(TaskDataBaseHelper.TABLE_TASK, newValues, where, null) != 0;
+	}
+	
 	
 	protected Task cursorToTask(Cursor cursor) {
 		Task task = new Task();
@@ -117,7 +127,5 @@ public class TaskDAO {
 		task.setTaskDetails(cursor.getString(2));
 		
 		return task;
-	}
-	
-	 	 
+	}	 	 
 }

@@ -1,7 +1,5 @@
 package nl.mprog.setup.mproject10173072;
 
-import java.util.UUID;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,8 +30,7 @@ public class TaskActivity extends FragmentActivity {
 		
 		//retrieve the extra from CrimeActivity's intent 
 		//and pass it into CrimeFragment.newInstance(UUID).
-		UUID taskId = (UUID)getIntent()
-				.getSerializableExtra(TaskFragment.EXTRA_TASK_ID);
+		Long taskId = (Long)getIntent().getSerializableExtra(TaskFragment.EXTRA_TASK_ID);
 		
 		return TaskFragment.newInstance(taskId);
 	}

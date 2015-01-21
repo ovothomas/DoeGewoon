@@ -1,26 +1,29 @@
 package nl.mprog.setup.mproject10173072;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.view.LayoutInflater;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-public class TaskListActivity extends ListActivity {
-	private ArrayList<Task> mTasks;
+public class TaskListActivity extends ListActivity{
+	public final String TAG = "TaskListActivity";
 	private Button mTaskButton;
+	private List<Task> mListTasks;
+	private TaskDAO mTaskDAO;
+	private TaskListAdapter mAdapter;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,10 +32,15 @@ public class TaskListActivity extends ListActivity {
 		//configuring the actionbar
 		getActionBar().setTitle(R.string.task_title);
 		
+		
+		
+		mTaskDAO = new TaskDAO(this);
+		mListTasks = mTaskDAO.getAllTasks();
+		
 		// retrieving the tasks in Taskstorage to display
 		// and setting custom made adapter to populate the listview
-		mTasks = TaskStorage.get(getBaseContext()).getTasks();
-		TaskAdapter adapter = new TaskAdapter(this, mTasks);
+		
+		TaskListAdapter adapter = new TaskListAdapter(this, mListTasks);
 		setListAdapter(adapter);
 		
 		mTaskButton = (Button)findViewById(R.id.button_add_task);
@@ -46,10 +54,11 @@ public class TaskListActivity extends ListActivity {
 		});
 	}
 	
-	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
+		super.onListItemClick(l, v, position, id);
 	
-		Task task = ((TaskAdapter)getListAdapter()).getItem(position);
+		Task task = ((TaskListAdapter)getListAdapter()).getItem(position);
+		Log.d(TAG, "clickedItem : " + task.getTaskTitle());
 		
 		//Start TaskpagerActivity and putExtra Id of the particular fragment
 		Intent i = new Intent(this, TaskPagerActivity.class);
@@ -58,48 +67,11 @@ public class TaskListActivity extends ListActivity {
 		startActivity(i);
 		
 	}
-	
-	// Creating a custom adapter to populate the listview
-	private class TaskAdapter extends ArrayAdapter<Task>{		
-
-		public TaskAdapter(Context context, ArrayList<Task> tasks){
-			
-			super(context, 0, tasks);
-		}
-		
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent){
-		//Get the data item for this position
-		Task task = getItem(position);
-		//Check if an existing view is being reused, otherwise inflate the view
-		if (convertView == null){
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_task_row, parent, false);
-		}
-		
-		//look for the view to populate with data
-		TextView tvTitle = (TextView)convertView.findViewById(R.id.task_titleTextView);
-		TextView tvDate = (TextView)convertView.findViewById(R.id.task_dateTextView);
-		CheckBox tvCompleted = (CheckBox)convertView.findViewById(R.id.task_completed_checkbox);
-		
-		// Populate the data into the template view using the data object
-		tvTitle.setText(task.getTaskTitle());
-		tvDate.setText(DateFormat.format("EEEE, MMM dd, yyyy",task.getTaskDate()));
-		tvCompleted.setChecked(task.isCompleted());
-		
-		
-		return convertView;
-		
-		}
-	}
-	
-	/*
-	 * Notify the listadapter when particular TaskFragment is
-	 * configured
-	 */
+	 
 	@Override
 	public void onResume(){
 		super.onResume();
-		((TaskAdapter)getListAdapter()).notifyDataSetChanged();
+		((TaskListAdapter)getListAdapter()).notifyDataSetChanged();
 	}
 	
 	@Override
@@ -122,12 +94,61 @@ public class TaskListActivity extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	
 	// create Task function
 	public void createTask(){
 		Task task = new Task();
-		TaskStorage.get(getBaseContext()).addTask(task);
+		//TaskStorage.get(getBaseContext()).addTask(task);
 		Intent i = new Intent(getBaseContext(), TaskPagerActivity.class);
 		i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
 		startActivityForResult(i, 0);
 	}
+
+	public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+		Task task = mAdapter.getItem(position);
+		Log.d(TAG, "longClickdItem : " + task.getTaskTitle());
+		showDeleteDialogConfirmation(task);
+		return true;
+	}
+	
+	private void showDeleteDialogConfirmation(final Task task){
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle("DELETE");
+		alertDialogBuilder.setMessage("Sure you want to delete \"" + task.getTaskTitle());
+		alertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				if (mTaskDAO != null){
+					mTaskDAO.deleteTask(task);
+					mListTasks.remove(task);
+					((TaskListAdapter)getListAdapter()).setItems(mListTasks);
+					((TaskListAdapter)getListAdapter()).notifyDataSetChanged();
+				}
+				
+				dialog.dismiss();
+				Toast.makeText(TaskListActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		 // set neutral button OK
+        alertDialogBuilder.setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// Dismiss the dialog
+                dialog.dismiss();
+			}
+		});
+        
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	this.getMenuInflater().inflate(R.menu.task_list_item, menu);
+	} 
 }

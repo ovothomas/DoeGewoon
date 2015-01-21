@@ -1,6 +1,7 @@
 package nl.mprog.setup.mproject10173072;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import android.os.Bundle;
@@ -15,10 +16,15 @@ public class TaskPagerActivity extends FragmentActivity {
 	private ViewPager mTaskViewPager;
 	//Arraylist of tasks
 	private ArrayList<Task> mTasks;
+	private List<Task> mListTasks;
+	private TaskDAO mTaskDAO;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
+		mTaskDAO = new TaskDAO(this);
+		mListTasks = mTaskDAO.getAllTasks();
 		
 		//instantiating viewpager and settings its content view
 		mTaskViewPager = new ViewPager(this);
@@ -26,7 +32,7 @@ public class TaskPagerActivity extends FragmentActivity {
 		setContentView(mTaskViewPager);
 		
 		// retrieving tasks from TaskStorage
-		mTasks = TaskStorage.get(this).getTasks();
+		//mTasks = TaskStorage.get(this).getTasks();
 		
 		//getting activities instance of FragmentManager
 		FragmentManager fm = getSupportFragmentManager();
@@ -45,7 +51,7 @@ public class TaskPagerActivity extends FragmentActivity {
 			@Override
 			public Fragment getItem(int pos) {
 				// TODO Auto-generated method stub
-				Task task = mTasks.get(pos);
+				Task task = mListTasks.get(pos);
 				return TaskFragment.newInstance(task.getId());
 			}
 			
@@ -53,18 +59,18 @@ public class TaskPagerActivity extends FragmentActivity {
 			@Override
 			public int getCount() {
 				// TODO Auto-generated method stub
-				return mTasks.size();
+				return mListTasks.size();
 			}
 			
 		});
 		
-		UUID taskId = (UUID)getIntent().getSerializableExtra(TaskFragment.EXTRA_TASK_ID);
+		Long taskId = (Long)getIntent().getSerializableExtra(TaskFragment.EXTRA_TASK_ID);
 		// loop through the arraylist of tasks and 
 		// check the id of each task. when the id matches
 		// that of the intent extra, set the item to the 
 		// index of that Task
-		for(int x = 0; x < mTasks.size(); x++){
-			if(mTasks.get(x).getId().equals(taskId)){
+		for(int x = 0; x < mListTasks.size(); x++){
+			if(mListTasks.get(x).getId().equals(taskId)){
 				// show this item in ViewPager
 				mTaskViewPager.setCurrentItem(x);
 			}

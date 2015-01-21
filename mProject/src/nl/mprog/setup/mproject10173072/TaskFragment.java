@@ -1,7 +1,7 @@
 package nl.mprog.setup.mproject10173072;
 
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,8 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +23,9 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 public class TaskFragment extends Fragment {
+	
+	public static final String TAG = "AddTaskActivity";
+	public static final String TAG1 = "Listtask";
 	
 	public static final String EXTRA_TASK_ID =
 			"nl.mprog.setup.mproject10173072.task_id";
@@ -40,9 +43,13 @@ public class TaskFragment extends Fragment {
 	private CheckBox mTaskCompletedCheckBox;
 	private Button mTaskTimeButton;
 	private Button mAddTask;
+	private List<Task> mListTasks;
+	private TaskDAO mTaskDAO;
+	
 	
 	// SQL Database
 	private TaskDAO mDatabase;
+	private Long Task;
 	
 	
 	private void updateTime(){
@@ -56,15 +63,16 @@ public class TaskFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		
+		Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
 		mDatabase = new TaskDAO(getActivity());
+		mTask = mDatabase.getTaskById(taskId);
 		
 		//Enabling the app icon as Up button 
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// call getArguments() to access its arguments of the fragment being created
-		UUID taskId = (UUID)getArguments().getSerializable(EXTRA_TASK_ID);
-		mTask = TaskStorage.get(getActivity()).getTask(taskId);
+		
+		//mTask = TaskStorage.get(getActivity()).getTask(taskId);
 		
 	}
 	
@@ -87,7 +95,7 @@ public class TaskFragment extends Fragment {
 		
 		//Setting and wiring completed checkbox
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
-		mTaskCompletedCheckBox.setChecked(mTask.isCompleted());
+		//mTaskCompletedCheckBox.setChecked(mTask.isCompleted());
 		mTaskCompletedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			@Override
@@ -133,8 +141,20 @@ public class TaskFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(), TaskListActivity.class);
-				startActivity(intent);
+				Editable taskTitle =  mTaskTitle.getText();
+				Editable taskDetails = mTaskDetails.getText();
+				Task createdTask = mDatabase.createTask(taskTitle.toString(), taskDetails.toString());
+				//Intent intent = new Intent();
+				//intent.putEXTRA(TaskListActivity.EXTRA_ADDED_TASK, createdTask );
+				//setResult(RESULT_OK, intent);
+				
+				List<Task> getListTask = mDatabase.getAllTasks();
+				
+				Log.d(TAG, "added company : " + createdTask.getTaskTitle());
+				Log.d(TAG1, "Lenght list: " + getListTask.size());
+				
+				//Intent intent = new Intent(getActivity(), TaskListActivity.class);
+				//startActivity(intent);
 				//finish();
 				 
 			}
@@ -145,10 +165,10 @@ public class TaskFragment extends Fragment {
 	}
 	
 	// Attach arguments bundle to a fragment
-	public static TaskFragment newInstance(UUID taskId){
+	public static TaskFragment newInstance(Long l){
 		
 		Bundle args = new Bundle();
-		args.putSerializable(EXTRA_TASK_ID, taskId);
+		args.putSerializable(EXTRA_TASK_ID, l);
 		
 		// create Fragment instance of that particular id
 		TaskFragment fragment = new TaskFragment();
@@ -187,5 +207,11 @@ public class TaskFragment extends Fragment {
 	        return true;
 	    }
 	    return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		mDatabase.close();
 	}
 }
