@@ -16,12 +16,12 @@ public class DatePickerFragment extends DialogFragment {
 	public static final String EXTRA_DATE = 
 			"nl.mprog.setup.mproject10173072.date";
 	
-	private Date mDate;
+	private long mDate;
 	private int mYear, mMonth, mDay;
 	
-	public static DatePickerFragment newInstance(Date date){
+	public static DatePickerFragment newInstance(long l){
 		Bundle args = new Bundle();
-		args.putSerializable(EXTRA_DATE, date);
+		args.putSerializable(EXTRA_DATE, l);
 		
 		DatePickerFragment fragment = new DatePickerFragment();
 		fragment.setArguments(args);
@@ -31,11 +31,11 @@ public class DatePickerFragment extends DialogFragment {
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
-		mDate = (Date)getArguments().getSerializable(EXTRA_DATE);
+		mDate = (Long)getArguments().getSerializable(EXTRA_DATE);
 		
 		// Use the current date as the default date in the picker
 		final Calendar calendar = Calendar.getInstance();
-		calendar.setTime(mDate);
+		calendar.setTimeInMillis(mDate);
 		mYear = calendar.get(Calendar.YEAR);
 		mMonth = calendar.get(Calendar.MONTH);
 		mDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -47,7 +47,7 @@ public class DatePickerFragment extends DialogFragment {
 					public void onDateSet(DatePicker view, int year, int monthOfYear,
 							int dayOfMonth) {
 						// TODO Auto-generated method stub
-						mDate = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime();
+						mDate = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis();
 						sendResult(Activity.RESULT_OK);
 						
 					}

@@ -15,14 +15,12 @@ public class Task {
 	//creating members
 	private Long mId;
 	private String mTaskTitle;
-	private Date mTaskDate;
+	private long mTaskDate;
 	private boolean mCompleted;
 	private String mTaskDetails;
 	
 	public Task(){
 		
-		// generate Id's for the tasks
-		mTaskDate = new Date();
 	}
 	
 	@Override
@@ -30,11 +28,11 @@ public class Task {
 		return mTaskTitle;
 	}
 
-	public Date getTaskDate() {
+	public long getTaskDate() {
 		return mTaskDate;
 	}
 
-	public void setTaskDate(Date taskDate) {
+	public void setTaskDate(long taskDate) {
 		mTaskDate = taskDate;
 	}
 

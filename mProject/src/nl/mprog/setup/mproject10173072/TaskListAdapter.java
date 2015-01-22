@@ -22,36 +22,21 @@ public class TaskListAdapter extends BaseAdapter {
 		this.mInflater = LayoutInflater.from(context);
 	}
 
-	/*
-	private void setItems(List<Task> mItems) {
-		// TODO Auto-generated method stub
-		this.mItems = mItems;
-	}*/
-
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return (getItems() != null && !getItems().isEmpty()) ? getItems().size() : 0 ;
 	}
 
 	public Task getItem(int position) {
-		// TODO Auto-generated method stub
-		//return mItems.get(position);
 		return (getItems() != null && !getItems().isEmpty()) ? getItems().get(position) : null ;
 	}
 
 	public Long getItemId(Long position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 	
-	 
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		//Task taskListItems = mItems.get(position);
-		
 		if (convertView == null){
 			convertView = mInflater.inflate(R.layout.activity_task_row, parent, false);	
 		}
@@ -62,8 +47,6 @@ public class TaskListAdapter extends BaseAdapter {
 		// Populate the data into the template view using the data object
 		tvTitle.setText(currentItem.getTaskTitle());
 		
-		
-
 		return convertView;
 	}
 	
@@ -73,16 +56,12 @@ public class TaskListAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 	
 	public void setItems(List<Task> mItems) {
 		this.mItems = mItems;
 	}
-
-
-
 }
 
 

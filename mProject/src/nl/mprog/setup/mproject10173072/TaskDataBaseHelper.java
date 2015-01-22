@@ -13,13 +13,13 @@ public class TaskDataBaseHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_TASK_ID = "_id";
 	public static final String COLUMN_TASK_DETAILS = "details";
 	public static final String COLUMN_TASK_DATE = "date";
-	public static final String COLUMN_TASK_TIME = "time";
+	public static final String COLUMN_TASK_COMPLETED = "completed";
 	
 	public static final String DATABASE_NAME = "taskdatabase.db";
-	public static final int DATABASE_VERSION = 1 ;
+	public static final int DATABASE_VERSION = 3 ;
 	
 	public static final String SQL_CREATE_TABLE_TASKS = " CREATE TABLE " + TABLE_TASK + "(" + COLUMN_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ COLUMN_TITLE + " TEXT NOT NULL, " + COLUMN_TASK_DETAILS + ");";
+			+ COLUMN_TITLE + " TEXT NOT NULL, " + COLUMN_TASK_DETAILS + " TEXT NOT NULL,"+ COLUMN_TASK_DATE + " INTEGER NOT NULL" + COLUMN_TASK_COMPLETED + " INTEGER NOT NULL" + ");";
 	
 
 	public TaskDataBaseHelper(Context context) {

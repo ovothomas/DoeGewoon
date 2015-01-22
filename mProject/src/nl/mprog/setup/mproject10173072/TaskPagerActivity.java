@@ -22,27 +22,17 @@ public class TaskPagerActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
-		mTaskDAO = new TaskDAO(this);
-		mListTasks = mTaskDAO.getAllTasks();
-		
 		//instantiating viewpager and settings its content view
 		mTaskViewPager = new ViewPager(this);
 		mTaskViewPager.setId(R.id.viewPager);
 		setContentView(mTaskViewPager);
-		
-		// retrieving tasks from TaskStorage
-		//mTasks = TaskStorage.get(this).getTasks();
+		//get data from database
+		mTaskDAO = new TaskDAO(this);
+		mListTasks = mTaskDAO.getAllTasks();
 		
 		//getting activities instance of FragmentManager
 		FragmentManager fm = getSupportFragmentManager();
 		mTaskViewPager.setAdapter(new FragmentStatePagerAdapter(fm){
-
-			/*
-			 * Adding fragments returned to activity and helping
-			 * ViewPager identify the fragment's view so that they can
-			 * be placed correctly with FragmentStatePagerAdapter
-			 */
 			
 			// fetch the task instance for that particular position
 			// and use its ID to create and return a properly configured
