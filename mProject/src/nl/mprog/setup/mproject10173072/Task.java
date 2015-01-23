@@ -16,11 +16,12 @@ public class Task {
 	private Long mId;
 	private String mTaskTitle;
 	private long mTaskDate;
-	private boolean mCompleted;
+	private int mCompleted;
 	private String mTaskDetails;
 	
 	public Task(){
-		
+		this.mTaskTitle = null;
+		this.mCompleted = 0;	
 	}
 	
 	@Override
@@ -36,11 +37,11 @@ public class Task {
 		mTaskDate = taskDate;
 	}
 
-	public boolean isCompleted() {
+	public int isCompleted() {
 		return mCompleted;
 	}
 
-	public void setCompleted(boolean completed) {
+	public void setCompleted(int completed) {
 		mCompleted = completed;
 	}
 

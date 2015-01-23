@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
@@ -39,18 +40,14 @@ public class TaskFragment extends Fragment {
 	public static final int REQUEST_TIME = 1;
 	//member variable for Task
 	private Task mTask;
-		
 	private EditText mTaskTitle;
 	private EditText mTaskDetails;
 	private Button mTaskDateButton;
 	private CheckBox mTaskCompletedCheckBox;
-	private Button mTaskTimeButton;
 	private Button mAddTask;
 	// SQL Database
 	private TaskDAO mDatabase;
-	private void updateTime(){
-		mTaskTimeButton.setText(DateFormat.format("hh:mm", mTask.getTaskDate()));
-	}
+	
 	private void updateDate(){
 		mTaskDateButton.setText(DateFormat.format("EEEE, MMM dd, yyyy",mTask.getTaskDate()));
 	}
@@ -63,9 +60,7 @@ public class TaskFragment extends Fragment {
 		mDatabase = new TaskDAO(getActivity());
 		mTask = mDatabase.getTaskById(taskId);
 		//Enabling the app icon as Up button 
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);	
 	}
 	
 	// Inflate the layout view
@@ -79,24 +74,29 @@ public class TaskFragment extends Fragment {
 		mTaskDetails = (EditText)view.findViewById(R.id.task_details);
 		mTaskDetails.setText(mTask.getTaskDetails());
 		
-		
 		//Wiring up the edittext to respond to user input
 		mTaskTitle = (EditText)view.findViewById(R.id.task_title);
 		mTaskTitle.setText(mTask.getTaskTitle());
 		
-		
 		//Setting and wiring completed checkbox
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
-		//mTaskCompletedCheckBox.setChecked(mTask.isCompleted());
-		mTaskCompletedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+		//mTaskCompletedCheckBox.setChecked(mTask.isCompleted()==1?true:false);
+		/*mTaskCompletedCheckBox.setOnClickListener(new View.OnClickListener(){
 
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mTask.setCompleted(isChecked);
+				Task changeTask = (Task) mTaskCompletedCheckBox.getTag();
+				changeTask.setCompleted(mTaskCompletedCheckBox.isChecked() == true ? 1:0);
+				Toast.makeText(
+						getActivity(),
+						"Clicked on Checkbox: " + mTaskCompletedCheckBox.getText() + " is "
+								+ mTaskCompletedCheckBox.isChecked(), Toast.LENGTH_LONG)
+						.show();
 			}
-		});
+			
+		});*/
+		 
 		
 		//Setting and wiring the date button to show date in custom format
 		mTaskDateButton = (Button)view.findViewById(R.id.task_date);
@@ -110,7 +110,7 @@ public class TaskFragment extends Fragment {
 				dialog.setTargetFragment(TaskFragment.this, REQUEST_DATE);
 				dialog.show(datepicker, DPDIALOG_DATE);
 			}});
-		
+		/*
 		//setting up timeButton to show the time the task was made
 		mTaskTimeButton = (Button)view.findViewById(R.id.task_time);
 		updateTime();
@@ -125,28 +125,14 @@ public class TaskFragment extends Fragment {
 				dialog.setTargetFragment(TaskFragment.this, REQUEST_TIME);
 				dialog.show(timepicker, DPDIALOG_TIME);
 			}
-		});
+		});*/
 		
 		mAddTask = (Button)view.findViewById(R.id.addButton);
 		mAddTask.setOnClickListener(new View.OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				//Editable taskTitle =  mTaskTitle.getText();
-				//Editable taskDetails = mTaskDetails.getText();
-				//Task createdTask = mDatabase.createTask(taskTitle.toString(), taskDetails.toString());
-				//Intent intent = new Intent();
-				//intent.putEXTRA(TaskListActivity.EXTRA_ADDED_TASK, createdTask );
-				//setResult(RESULT_OK, intent);
-				List<Task> getListTask = mDatabase.getAllTasks();
-				
-				//Log.d(TAG, "added company : " + createdTask.getTaskTitle());
-				Log.d(TAG1, "Lenght list: " + getListTask.size());
-				
-				//Intent intent = new Intent(getActivity(), TaskListActivity.class);
-				//startActivity(intent);
-				//finish();		 
+				 update();
 			}	 
 		});
 		
@@ -171,21 +157,19 @@ public class TaskFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode != Activity.RESULT_OK) return;
 		if (requestCode == REQUEST_DATE) {
-			//Calendar cal = Calendar.getInstance();
-			//Date date = (Date)data
-			//		.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-			//cal.setTime(date);
 			long date = data.getLongExtra(DatePickerFragment.EXTRA_DATE, 0);
 			mTask.setTaskDate(date);
 			updateDate();
-		} else if (requestCode == REQUEST_TIME){
+		} 
+		/*
+		else if (requestCode == REQUEST_TIME){
 			Calendar cal = Calendar.getInstance();
 			Date date = (Date)data
 					.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
 			cal.setTime(date);
 			mTask.setTaskDate(cal.getTimeInMillis());
 			updateTime();
-		}
+		}*/
 	}
 	
 	// using the actionbar to navigate to the homepage
@@ -196,28 +180,37 @@ public class TaskFragment extends Fragment {
 	    case android.R.id.home:
 	    	if (NavUtils.getParentActivityName(getActivity()) != null){
 	    	NavUtils.navigateUpFromSameTask(getActivity());
-	    	Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
-	    	String taskTitle =  mTaskTitle.getText().toString();
-			String taskDetails = mTaskDetails.getText().toString();
-			String dateString = mTaskDateButton.getText().toString();
-			SimpleDateFormat stf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
-			try {
-				stf.parse(dateString);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			long date = stf.getCalendar().getTimeInMillis();
-			mDatabase.updateTaskById(taskId, taskTitle, taskDetails, date);
-	    	}
+	    	update();
 	        return true;
+	        }
 	    }
-	    return super.onOptionsItemSelected(item);
+	   return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
 		mDatabase.close();
+	}
+	
+	private void update(){
+		Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
+    	String taskTitle =  mTaskTitle.getText().toString();
+		String taskDetails = mTaskDetails.getText().toString();
+		Boolean taskCompleted = mTaskCompletedCheckBox.isChecked();
+		String dateString = mTaskDateButton.getText().toString();
+		SimpleDateFormat stf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+		try {
+			stf.parse(dateString);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long date = stf.getCalendar().getTimeInMillis();
+		mDatabase.updateTaskById(taskId, taskTitle, taskDetails, date, taskCompleted );
+		Intent intent = new Intent(getActivity(), TaskListActivity.class);
+		startActivity(intent);
+		getActivity().finish();	
+    	
 	}
 }

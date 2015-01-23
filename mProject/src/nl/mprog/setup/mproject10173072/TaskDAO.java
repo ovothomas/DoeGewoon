@@ -19,7 +19,8 @@ public class TaskDAO {
 	private TaskDataBaseHelper mTaskDataBaseHelper;
 	private Context context;
 	private String[] mAllColumns = {
-			TaskDataBaseHelper.COLUMN_TASK_ID, TaskDataBaseHelper.COLUMN_TITLE, TaskDataBaseHelper.COLUMN_TASK_DETAILS, TaskDataBaseHelper.COLUMN_TASK_DATE};
+			TaskDataBaseHelper.COLUMN_TASK_ID, TaskDataBaseHelper.COLUMN_TITLE, TaskDataBaseHelper.COLUMN_TASK_DETAILS, TaskDataBaseHelper.COLUMN_TASK_DATE,
+			TaskDataBaseHelper.COLUMN_TASK_COMPLETED};
 
 	public TaskDAO(Context context){
 		this.context = context;
@@ -46,13 +47,14 @@ public class TaskDAO {
 	}
 	
 	// add new set of values to 
-	public Task createTask(String title, String details, long date){
+	public Task createTask(String title, String details, long date, boolean completed){
 		
 		//Create row's data
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(TaskDataBaseHelper.COLUMN_TITLE, title);
 		initialValues.put(TaskDataBaseHelper.COLUMN_TASK_DETAILS, details);
 		initialValues.put(TaskDataBaseHelper.COLUMN_TASK_DATE, date);
+		initialValues.put(TaskDataBaseHelper.COLUMN_TASK_COMPLETED, completed);
 		
 
 		long insertId = mDatabase
@@ -63,6 +65,8 @@ public class TaskDAO {
 				null, null);
 		cursor.moveToFirst();
 		Task newTask = cursorToTask(cursor);
+		
+		// close cursor
 		cursor.close();
 		return newTask;
 		
@@ -87,7 +91,7 @@ public class TaskDAO {
 				cursor.moveToNext();
 			}
 
-			// make sure to close the cursor
+			// close the cursor
 			cursor.close();
 		}
 		return listTask;
@@ -106,16 +110,16 @@ public class TaskDAO {
 		return task;
 	}
 	
-	public boolean updateTaskById(Long id, String title, String details, long date) {
+	public boolean updateTaskById(Long id, String title, String details, long date, boolean completed) {
 		String where = TaskDataBaseHelper.COLUMN_TASK_ID + "=" + id;
 		ContentValues newValues = new ContentValues();
 		newValues.put(TaskDataBaseHelper.COLUMN_TITLE, title);
 		newValues.put(TaskDataBaseHelper.COLUMN_TASK_DETAILS, details);
 		newValues.put(TaskDataBaseHelper.COLUMN_TASK_DATE, date);
+		newValues.put(TaskDataBaseHelper.COLUMN_TASK_COMPLETED, completed);
 		// Insert it into the database.
 		return mDatabase.update(TaskDataBaseHelper.TABLE_TASK, newValues, where, null) != 0;
 	}
-	
 	
 	protected Task cursorToTask(Cursor cursor) {
 		Task task = new Task();
@@ -123,6 +127,7 @@ public class TaskDAO {
 		task.setTaskTitle(cursor.getString(1));
 		task.setTaskDetails(cursor.getString(2));
 		task.setTaskDate(cursor.getLong(3));
+		task.setCompleted(cursor.getInt(4));
 		
 		return task;
 	}	 	 

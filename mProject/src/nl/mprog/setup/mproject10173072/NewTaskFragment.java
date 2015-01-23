@@ -39,9 +39,8 @@ public class NewTaskFragment extends Fragment {
 	private EditText mTaskDetails;
 	private Button mTaskDateButton;
 	private CheckBox mTaskCompletedCheckBox;
-	private Button mTaskTimeButton;
 	private Button mAddTask;
-	private int mYear, mMonth, mDay;
+	 
 	// SQL Database
 	private TaskDAO mDatabase;
 	Calendar calendar = Calendar.getInstance(); 
@@ -70,14 +69,13 @@ public class NewTaskFragment extends Fragment {
 		mTaskTitle = (EditText)view.findViewById(R.id.task_title);
 		//Setting and wiring completed checkbox
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
-		//mTaskCompletedCheckBox.setChecked(mTask.isCompleted());
 		mTaskCompletedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				// TODO Auto-generated method stub
-				mTask.setCompleted(isChecked);
+			//	mTask.setCompleted(isChecked);
 			}
 		});
 		
@@ -86,16 +84,15 @@ public class NewTaskFragment extends Fragment {
 		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
 		String dateString = sdf.format(calendar.getTimeInMillis());   
 		mTaskDateButton.setText(dateString);
-		//mTaskDateButton.setText(DateFormat.format("EEEE, MMM dd, yyyy", mYear));
 		mTaskDateButton.setEnabled(false);
 		
+		/*
 		//setting up timeButton to show the time the task was made
 		mTaskTimeButton = (Button)view.findViewById(R.id.task_time);
 		SimpleDateFormat stf = new SimpleDateFormat("hh:mm");
 		String timeString = stf.format(calendar.getTimeInMillis());
-		
 		mTaskTimeButton.setText(timeString);
-		mTaskTimeButton.setEnabled(false);
+		mTaskTimeButton.setEnabled(false);*/
 		
 		mAddTask = (Button)view.findViewById(R.id.addButton);
 		mAddTask.setOnClickListener(new View.OnClickListener(){
@@ -105,20 +102,17 @@ public class NewTaskFragment extends Fragment {
 				// TODO Auto-generated method stub
 				Editable taskTitle =  mTaskTitle.getText();
 				Editable taskDetails = mTaskDetails.getText();
-				
+				Boolean taskCompleted = mTaskCompletedCheckBox.isChecked();
 				String dateString = mTaskDateButton.getText().toString();
-				SimpleDateFormat stf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
 				try {
-					stf.parse(dateString);
+					sdf.parse(dateString);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				long time = stf.getCalendar().getTimeInMillis();
-				
-				Task createdTask = mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time);
-				
-				
+				long time = sdf.getCalendar().getTimeInMillis();
+				Task createdTask = mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time, taskCompleted);	
 				List<Task> getListTask = mDatabase.getAllTasks();
 				Log.d(TAG, "added company : " + createdTask.getTaskTitle());
 				Log.d(TAG1, "Lenght list: " + getListTask.size());
@@ -152,10 +146,27 @@ public class NewTaskFragment extends Fragment {
 	    case android.R.id.home:
 	    	if (NavUtils.getParentActivityName(getActivity()) != null){
 	    	NavUtils.navigateUpFromSameTask(getActivity());
-	    	//Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
-	    	//String taskTitle =  mTaskTitle.getText().toString();
-			//String taskDetails = mTaskDetails.getText().toString(); 
-			//mDatabase.updateTaskById(taskId, taskTitle, taskDetails);
+	    	Editable taskTitle =  mTaskTitle.getText();
+			Editable taskDetails = mTaskDetails.getText();
+			Boolean taskCompleted = mTaskCompletedCheckBox.isChecked();
+			String dateString = mTaskDateButton.getText().toString();
+			SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+			try {
+				sdf.parse(dateString);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			long time = sdf.getCalendar().getTimeInMillis();
+			Task createdTask = mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time, taskCompleted);
+			
+			
+			List<Task> getListTask = mDatabase.getAllTasks();
+			Log.d(TAG, "added company : " + createdTask.getTaskTitle());
+			Log.d(TAG1, "Lenght list: " + getListTask.size());
+			Intent intent = new Intent(getActivity(), TaskListActivity.class);
+			startActivity(intent);
+			getActivity().finish();	
 	    	}
 	        return true;
 	    }

@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class TaskListActivity extends Activity implements OnItemLongClickListener, OnItemClickListener, android.widget.AdapterView.OnItemLongClickListener, android.widget.AdapterView.OnItemClickListener{
 	public final String TAG = "TaskListActivity";
 	private List<Task> mListTasks;
-	private TaskDAO mTaskDAO;
+	private TaskDAO mDatabase;
 	private TaskListAdapter mAdapter;
 	private ListView mListView;
 	public static final int REQUEST_CODE_ADD_TASK = 40;
@@ -34,8 +34,8 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
 		getActionBar().setTitle(R.string.task_title);
 		//Initialize view
 		initViews();
-		mTaskDAO = new TaskDAO(this);
-		mListTasks = mTaskDAO.getAllTasks();
+		mDatabase= new TaskDAO(this);
+		mListTasks = mDatabase.getAllTasks();
 		mAdapter = new TaskListAdapter(this, mListTasks);
 		mListView.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
@@ -50,7 +50,7 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
 	@Override
 	public void onResume(){
 		super.onResume();
-		mListTasks = mTaskDAO.getAllTasks();
+		mListTasks = mDatabase.getAllTasks();
 		mAdapter.setItems(mListTasks);
 		mAdapter.notifyDataSetChanged();
 	}
@@ -92,8 +92,8 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-				if (mTaskDAO != null){
-					mTaskDAO.deleteTask(task);
+				if (mDatabase != null){
+					mDatabase.deleteTask(task);
 					mListTasks.remove(task);
 					mAdapter.setItems(mListTasks);
 					mAdapter.notifyDataSetChanged();
@@ -128,6 +128,7 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
 		// tell TaskFragment which task to display by making the TaskId an Intent extra
 		i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
 		startActivity(i);
+		finish();
 		
 	}
 
@@ -161,4 +162,9 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
 		i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
 		startActivity(i);
 	} 
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		mDatabase.close();
+	}
 }

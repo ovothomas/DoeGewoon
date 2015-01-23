@@ -28,14 +28,6 @@
 		android:layout_marginRight="16dp"
 	/>
     
-     <Button 
-        android:id="@+id/task_time"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="16dp"
-		android:layout_marginRight="16dp"
-	/>
-     
 	<CheckBox 
 	  	android:id="@+id/task_completed"
 		android:layout_width="match_parent"
@@ -52,8 +44,6 @@
 		style="?android:listSeparatorTextViewStyle"
 	/>
      
-   
-	
 	<EditText 
 	    android:inputType="textMultiLine"
 	    android:lines="8"

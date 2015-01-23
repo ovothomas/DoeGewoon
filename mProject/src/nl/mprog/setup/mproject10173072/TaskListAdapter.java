@@ -1,8 +1,10 @@
 package nl.mprog.setup.mproject10173072;
 
+import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 public class TaskListAdapter extends BaseAdapter {
 	Context context;
+	Calendar calendar = Calendar.getInstance(); 
 	
 	public static final String TAG = "ListTaskAdapter";
 	
@@ -40,13 +43,19 @@ public class TaskListAdapter extends BaseAdapter {
 		if (convertView == null){
 			convertView = mInflater.inflate(R.layout.activity_task_row, parent, false);	
 		}
-
+		
 		//look for the view to populate with data
 		TextView tvTitle = (TextView)convertView.findViewById(R.id.task_titleTextView);
 		Task currentItem = getItem(position);
 		// Populate the data into the template view using the data object
 		tvTitle.setText(currentItem.getTaskTitle());
 		
+		TextView tvDate = (TextView)convertView.findViewById(R.id.task_dateTextView);
+		//SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+		//String dateString = sdf.format(calendar.getTimeInMillis());   
+		//tvDate.setText(dateString);
+		tvDate.setText(DateFormat.format("EEEE, MMM dd, yyyy",currentItem.getTaskDate()));
+
 		return convertView;
 	}
 	

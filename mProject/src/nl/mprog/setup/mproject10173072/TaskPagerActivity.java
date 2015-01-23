@@ -70,4 +70,9 @@ public class TaskPagerActivity extends FragmentActivity {
 		 * Implement OnpageChangeListener
 		 */
 	}
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		mTaskDAO.close();
+	}
 }
