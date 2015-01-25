@@ -7,9 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
-import android.support.v7.internal.widget.AdapterViewCompat.OnItemClickListener;
-import android.support.v7.internal.widget.AdapterViewCompat.OnItemLongClickListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,10 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class TaskListActivity extends Activity implements OnItemLongClickListener, OnItemClickListener, android.widget.AdapterView.OnItemLongClickListener, android.widget.AdapterView.OnItemClickListener{
+public class TaskListActivity extends Activity implements android.widget.AdapterView.OnItemLongClickListener, android.widget.AdapterView.OnItemClickListener{
 	public final String TAG = "TaskListActivity";
 	private List<Task> mListTasks;
-	private TaskDAO mDatabase;
+	private TaskDataBase mDatabase;
 	private TaskListAdapter mAdapter;
 	private ListView mListView;
 	public static final int REQUEST_CODE_ADD_TASK = 40;
@@ -32,15 +29,19 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
 		
 		//configuring the actionbar
 		getActionBar().setTitle(R.string.task_title);
+		
 		//Initialize view
 		initViews();
-		mDatabase= new TaskDAO(this);
+		
+		// open database and set the listadapter to display tasks in it
+		mDatabase= new TaskDataBase(this);
 		mListTasks = mDatabase.getAllTasks();
 		mAdapter = new TaskListAdapter(this, mListTasks);
 		mListView.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
 }
 	
+	// method to initialize the views
 	private void initViews(){
 		this.mListView = (ListView)findViewById(R.id.list_task);
 		this.mListView.setOnItemLongClickListener(this);
@@ -64,9 +65,7 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+		// enabling the actionbar to add tasks to the lists
 		int id = item.getItemId();
 		if (id == R.id.action_add_new_task) {
 			createTask();
@@ -77,12 +76,11 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
 	
 	// create Task function
 	public void createTask(){
-		//Task task = new Task();
-		//TaskStorage.get(getBaseContext()).addTask(task);
 		Intent i = new Intent(this, TaskActivity.class);
 		startActivity(i);
 	}
-
+	
+	// method to delete task from the list using a dailog
 	private void showDeleteDialogConfirmation(final Task task){
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("DELETE");
@@ -116,31 +114,6 @@ public class TaskListActivity extends Activity implements OnItemLongClickListene
         // show alert
         alertDialog.show();
 	}
-
-
-	@Override
-	public void onItemClick(AdapterViewCompat<?> parent,View view, int position,
-			long id) {
-		Task task = mAdapter.getItem(position);
-		Log.d(TAG, "clickedItem : " + task.getTaskTitle());
-		//Start TaskpagerActivity and putExtra Id of the particular fragment
-		Intent i = new Intent(this, TaskPagerActivity.class);
-		// tell TaskFragment which task to display by making the TaskId an Intent extra
-		i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
-		startActivity(i);
-		finish();
-		
-	}
-
-	@Override
-	public boolean onItemLongClick(AdapterViewCompat<?> parent, View view,
-			int position, long id) {
-		Task task = mAdapter.getItem(position);
-		Log.d(TAG, "longClickdItem : " + task.getTaskTitle());
-		showDeleteDialogConfirmation(task);
-		return true;
-	}
-
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,

@@ -1,8 +1,5 @@
 package nl.mprog.setup.mproject10173072;
 
-import java.util.Date;
-import java.util.UUID;
-
 public class Task {
 	
 	/*
@@ -20,8 +17,7 @@ public class Task {
 	private String mTaskDetails;
 	
 	public Task(){
-		this.mTaskTitle = null;
-		this.mCompleted = 0;	
+		
 	}
 	
 	@Override
@@ -37,7 +33,7 @@ public class Task {
 		mTaskDate = taskDate;
 	}
 
-	public int isCompleted() {
+	public int getCompleted() {
 		return mCompleted;
 	}
 

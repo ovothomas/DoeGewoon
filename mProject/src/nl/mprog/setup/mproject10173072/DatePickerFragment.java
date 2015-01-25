@@ -1,7 +1,6 @@
 package nl.mprog.setup.mproject10173072;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import android.app.Activity;
@@ -46,16 +45,15 @@ public class DatePickerFragment extends DialogFragment {
 					@Override
 					public void onDateSet(DatePicker view, int year, int monthOfYear,
 							int dayOfMonth) {
-						// TODO Auto-generated method stub
 						mDate = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis();
 						sendResult(Activity.RESULT_OK);
 						
 					}
 				}, mYear, mMonth, mDay);
 			return datepicker;
-			
 	}
 	
+	// send data result
 	private void sendResult(int resultCode){
 		if (getTargetFragment() == null)
 			return;

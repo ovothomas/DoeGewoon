@@ -2,9 +2,6 @@ package nl.mprog.setup.mproject10173072;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
-import android.text.Editable;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,9 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Toast;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 public class TaskFragment extends Fragment {
@@ -38,6 +31,7 @@ public class TaskFragment extends Fragment {
 	public static final String DPDIALOG_TIME = "time";
 	public static final int REQUEST_DATE = 0;
 	public static final int REQUEST_TIME = 1;
+	
 	//member variable for Task
 	private Task mTask;
 	private EditText mTaskTitle;
@@ -45,8 +39,9 @@ public class TaskFragment extends Fragment {
 	private Button mTaskDateButton;
 	private CheckBox mTaskCompletedCheckBox;
 	private Button mAddTask;
+	
 	// SQL Database
-	private TaskDAO mDatabase;
+	private TaskDataBase mDatabase;
 	
 	private void updateDate(){
 		mTaskDateButton.setText(DateFormat.format("EEEE, MMM dd, yyyy",mTask.getTaskDate()));
@@ -56,8 +51,10 @@ public class TaskFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		
+		// get id of task to create fragment
 		Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
-		mDatabase = new TaskDAO(getActivity());
+		mDatabase = new TaskDataBase(getActivity());
 		mTask = mDatabase.getTaskById(taskId);
 		//Enabling the app icon as Up button 
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);	
@@ -80,24 +77,17 @@ public class TaskFragment extends Fragment {
 		
 		//Setting and wiring completed checkbox
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
-		//mTaskCompletedCheckBox.setChecked(mTask.isCompleted()==1?true:false);
-		/*mTaskCompletedCheckBox.setOnClickListener(new View.OnClickListener(){
-
+		mTaskCompletedCheckBox.setChecked(mTask.getCompleted() == 1 ? true : false);
+		mTaskCompletedCheckBox.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Task changeTask = (Task) mTaskCompletedCheckBox.getTag();
-				changeTask.setCompleted(mTaskCompletedCheckBox.isChecked() == true ? 1:0);
-				Toast.makeText(
-						getActivity(),
-						"Clicked on Checkbox: " + mTaskCompletedCheckBox.getText() + " is "
-								+ mTaskCompletedCheckBox.isChecked(), Toast.LENGTH_LONG)
-						.show();
+				mTask.setCompleted(mTaskCompletedCheckBox.isChecked() == true ? 1 : 0);
+				Log.d(TAG, "added company : " + mTask.getCompleted());
 			}
-			
-		});*/
+		});
 		 
-		
 		//Setting and wiring the date button to show date in custom format
 		mTaskDateButton = (Button)view.findViewById(R.id.task_date);
 		updateDate();
@@ -110,23 +100,7 @@ public class TaskFragment extends Fragment {
 				dialog.setTargetFragment(TaskFragment.this, REQUEST_DATE);
 				dialog.show(datepicker, DPDIALOG_DATE);
 			}});
-		/*
-		//setting up timeButton to show the time the task was made
-		mTaskTimeButton = (Button)view.findViewById(R.id.task_time);
-		updateTime();
-		//mTaskTimeButton.setEnabled(false);
-		mTaskTimeButton.setOnClickListener(new View.OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				FragmentManager timepicker = getActivity().getSupportFragmentManager();
-				TimePickerFragment dialog = TimePickerFragment.newInstance(mTask.getTaskDate());
-				dialog.setTargetFragment(TaskFragment.this, REQUEST_TIME);
-				dialog.show(timepicker, DPDIALOG_TIME);
-			}
-		});*/
-		
+	
 		mAddTask = (Button)view.findViewById(R.id.addButton);
 		mAddTask.setOnClickListener(new View.OnClickListener(){
 
@@ -161,15 +135,6 @@ public class TaskFragment extends Fragment {
 			mTask.setTaskDate(date);
 			updateDate();
 		} 
-		/*
-		else if (requestCode == REQUEST_TIME){
-			Calendar cal = Calendar.getInstance();
-			Date date = (Date)data
-					.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
-			cal.setTime(date);
-			mTask.setTaskDate(cal.getTimeInMillis());
-			updateTime();
-		}*/
 	}
 	
 	// using the actionbar to navigate to the homepage
@@ -197,7 +162,7 @@ public class TaskFragment extends Fragment {
 		Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
     	String taskTitle =  mTaskTitle.getText().toString();
 		String taskDetails = mTaskDetails.getText().toString();
-		Boolean taskCompleted = mTaskCompletedCheckBox.isChecked();
+		int taskCompleted = mTask.getCompleted();
 		String dateString = mTaskDateButton.getText().toString();
 		SimpleDateFormat stf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
 		try {

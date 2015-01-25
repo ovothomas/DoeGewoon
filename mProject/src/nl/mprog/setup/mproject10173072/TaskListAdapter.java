@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class TaskListAdapter extends BaseAdapter {
@@ -51,11 +52,10 @@ public class TaskListAdapter extends BaseAdapter {
 		tvTitle.setText(currentItem.getTaskTitle());
 		
 		TextView tvDate = (TextView)convertView.findViewById(R.id.task_dateTextView);
-		//SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
-		//String dateString = sdf.format(calendar.getTimeInMillis());   
-		//tvDate.setText(dateString);
 		tvDate.setText(DateFormat.format("EEEE, MMM dd, yyyy",currentItem.getTaskDate()));
-
+		CheckBox checkBox = (CheckBox)convertView.findViewById(R.id.task_completed_checkbox);
+		convertView.setTag(checkBox);
+		
 		return convertView;
 	}
 	

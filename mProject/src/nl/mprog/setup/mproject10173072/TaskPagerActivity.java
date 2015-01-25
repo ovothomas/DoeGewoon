@@ -1,8 +1,6 @@
 package nl.mprog.setup.mproject10173072;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,21 +12,23 @@ import android.support.v4.view.ViewPager;
 public class TaskPagerActivity extends FragmentActivity {
 	//viewPager
 	private ViewPager mTaskViewPager;
-	//Arraylist of tasks
-	private ArrayList<Task> mTasks;
+	
+	//Arraylist of tasks;
 	private List<Task> mListTasks;
-	private TaskDAO mTaskDAO;
+	private TaskDataBase mDatabase;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
 		//instantiating viewpager and settings its content view
 		mTaskViewPager = new ViewPager(this);
 		mTaskViewPager.setId(R.id.viewPager);
 		setContentView(mTaskViewPager);
+		
 		//get data from database
-		mTaskDAO = new TaskDAO(this);
-		mListTasks = mTaskDAO.getAllTasks();
+		mDatabase = new TaskDataBase(this);
+		mListTasks = mDatabase.getAllTasks();
 		
 		//getting activities instance of FragmentManager
 		FragmentManager fm = getSupportFragmentManager();
@@ -51,7 +51,6 @@ public class TaskPagerActivity extends FragmentActivity {
 				// TODO Auto-generated method stub
 				return mListTasks.size();
 			}
-			
 		});
 		
 		Long taskId = (Long)getIntent().getSerializableExtra(TaskFragment.EXTRA_TASK_ID);
@@ -66,13 +65,25 @@ public class TaskPagerActivity extends FragmentActivity {
 			}
 		}
 		
-		/*
-		 * Implement OnpageChangeListener
-		 */
+		
+		// See the title of the task on the action bar
+		mTaskViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			public void onPageScrollStateChanged(int state) { }
+			
+			public void onPageScrolled(int pos, float posOffset, int posOffsetPixels) { }
+			
+			public void onPageSelected(int pos) {
+				Task task = mListTasks.get(pos);
+				if (task.getTaskTitle() != null) {
+					setTitle(task.getTaskTitle());
+				}
+			}
+		});
 	}
+	
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		mTaskDAO.close();
+		mDatabase.close();
 	}
 }

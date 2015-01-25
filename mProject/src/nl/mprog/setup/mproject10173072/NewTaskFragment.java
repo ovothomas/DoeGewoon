@@ -3,22 +3,17 @@ package nl.mprog.setup.mproject10173072;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 public class NewTaskFragment extends Fragment {
@@ -33,28 +28,44 @@ public class NewTaskFragment extends Fragment {
 	public static final String DPDIALOG_TIME = "time";
 	public static final int REQUEST_DATE = 0;
 	public static final int REQUEST_TIME = 1;
+	
 	//member variable for Task
-	private Task mTask;
 	private EditText mTaskTitle;
 	private EditText mTaskDetails;
 	private Button mTaskDateButton;
 	private CheckBox mTaskCompletedCheckBox;
 	private Button mAddTask;
+	private Task mTask;
 	 
 	// SQL Database
-	private TaskDAO mDatabase;
+	private TaskDataBase mDatabase;
 	Calendar calendar = Calendar.getInstance(); 
-
 	
+	private void addTask(){
+		Editable taskTitle =  mTaskTitle.getText();
+		Editable taskDetails = mTaskDetails.getText();
+		int taskCompleted = mTaskCompletedCheckBox.isChecked() == true ? 1:0;
+		String dateString = mTaskDateButton.getText().toString();
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+		try {
+			sdf.parse(dateString);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long time = sdf.getCalendar().getTimeInMillis();
+		mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time, taskCompleted);	
+		Intent intent = new Intent(getActivity(), TaskListActivity.class);
+		startActivity(intent);
+		getActivity().finish();		 	
+	}
+
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		mDatabase = new TaskDAO(getActivity());
-		//Enabling the app icon as Up button 
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);	
-		 
+		mDatabase = new TaskDataBase(getActivity());
 	}
 	
 	// Inflate the layout view
@@ -68,14 +79,17 @@ public class NewTaskFragment extends Fragment {
 		//Wiring up the edittext to respond to user input
 		mTaskTitle = (EditText)view.findViewById(R.id.task_title);
 		//Setting and wiring completed checkbox
+		
+		// since we are saving in database we cannot save the checkbox as a boolean
+		// so we convert boolean to an integer to be able to save
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
-		mTaskCompletedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-
+		mTaskCompletedCheckBox.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
-			//	mTask.setCompleted(isChecked);
+				mTask.setCompleted(mTaskCompletedCheckBox.isChecked() == true ? 1 : 0);
+				
 			}
 		});
 		
@@ -86,39 +100,12 @@ public class NewTaskFragment extends Fragment {
 		mTaskDateButton.setText(dateString);
 		mTaskDateButton.setEnabled(false);
 		
-		/*
-		//setting up timeButton to show the time the task was made
-		mTaskTimeButton = (Button)view.findViewById(R.id.task_time);
-		SimpleDateFormat stf = new SimpleDateFormat("hh:mm");
-		String timeString = stf.format(calendar.getTimeInMillis());
-		mTaskTimeButton.setText(timeString);
-		mTaskTimeButton.setEnabled(false);*/
-		
 		mAddTask = (Button)view.findViewById(R.id.addButton);
 		mAddTask.setOnClickListener(new View.OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Editable taskTitle =  mTaskTitle.getText();
-				Editable taskDetails = mTaskDetails.getText();
-				Boolean taskCompleted = mTaskCompletedCheckBox.isChecked();
-				String dateString = mTaskDateButton.getText().toString();
-				SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
-				try {
-					sdf.parse(dateString);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				long time = sdf.getCalendar().getTimeInMillis();
-				Task createdTask = mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time, taskCompleted);	
-				List<Task> getListTask = mDatabase.getAllTasks();
-				Log.d(TAG, "added company : " + createdTask.getTaskTitle());
-				Log.d(TAG1, "Lenght list: " + getListTask.size());
-				Intent intent = new Intent(getActivity(), TaskListActivity.class);
-				startActivity(intent);
-				getActivity().finish();		 
+			addTask();			
 			}	 
 		});
 		
@@ -144,30 +131,7 @@ public class NewTaskFragment extends Fragment {
 	    switch (item.getItemId()) {
 	    // Respond to the action bar's Up/Home button
 	    case android.R.id.home:
-	    	if (NavUtils.getParentActivityName(getActivity()) != null){
-	    	NavUtils.navigateUpFromSameTask(getActivity());
-	    	Editable taskTitle =  mTaskTitle.getText();
-			Editable taskDetails = mTaskDetails.getText();
-			Boolean taskCompleted = mTaskCompletedCheckBox.isChecked();
-			String dateString = mTaskDateButton.getText().toString();
-			SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
-			try {
-				sdf.parse(dateString);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			long time = sdf.getCalendar().getTimeInMillis();
-			Task createdTask = mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time, taskCompleted);
-			
-			
-			List<Task> getListTask = mDatabase.getAllTasks();
-			Log.d(TAG, "added company : " + createdTask.getTaskTitle());
-			Log.d(TAG1, "Lenght list: " + getListTask.size());
-			Intent intent = new Intent(getActivity(), TaskListActivity.class);
-			startActivity(intent);
-			getActivity().finish();	
-	    	}
+	    	 addTask();
 	        return true;
 	    }
 	    return super.onOptionsItemSelected(item);

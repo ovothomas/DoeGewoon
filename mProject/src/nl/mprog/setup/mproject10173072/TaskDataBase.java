@@ -10,7 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class TaskDAO {
+public class TaskDataBase {
 	
 	//for logging
 	private static final String TAG = "TaskDAO";
@@ -22,7 +22,7 @@ public class TaskDAO {
 			TaskDataBaseHelper.COLUMN_TASK_ID, TaskDataBaseHelper.COLUMN_TITLE, TaskDataBaseHelper.COLUMN_TASK_DETAILS, TaskDataBaseHelper.COLUMN_TASK_DATE,
 			TaskDataBaseHelper.COLUMN_TASK_COMPLETED};
 
-	public TaskDAO(Context context){
+	public TaskDataBase(Context context){
 		this.context = context;
 		mTaskDataBaseHelper = new TaskDataBaseHelper(context);
 		
@@ -36,7 +36,7 @@ public class TaskDAO {
 	}
 	
 	// open database
-	public TaskDAO open() throws SQLException{
+	public TaskDataBase open() throws SQLException{
 		mDatabase = mTaskDataBaseHelper.getWritableDatabase();
 		return this;
 	}
@@ -47,7 +47,7 @@ public class TaskDAO {
 	}
 	
 	// add new set of values to 
-	public Task createTask(String title, String details, long date, boolean completed){
+	public Task createTask(String title, String details, long date, int completed){
 		
 		//Create row's data
 		ContentValues initialValues = new ContentValues();
@@ -72,6 +72,7 @@ public class TaskDAO {
 		
 	}
 	
+	// function to deletask in the database
 	public void deleteTask(Task task){
 		long id = task.getId();
 		System.out.println("the deleted company has the id: " + id);
@@ -79,6 +80,7 @@ public class TaskDAO {
 				+ " = " + id, null);
 	}
 	
+	// getting all the tasks
 	public List<Task> getAllTasks(){
 		List<Task> listTask = new ArrayList<Task>();
 		
@@ -98,6 +100,7 @@ public class TaskDAO {
 		
 	}
 	
+	// getting a specific tasks
 	public Task getTaskById(Long id) {
 		Cursor cursor = mDatabase.query(TaskDataBaseHelper.TABLE_TASK, mAllColumns,
 				TaskDataBaseHelper.COLUMN_TASK_ID + " = ?",
@@ -110,17 +113,19 @@ public class TaskDAO {
 		return task;
 	}
 	
-	public boolean updateTaskById(Long id, String title, String details, long date, boolean completed) {
+	// updating a specific tasks
+	public boolean updateTaskById(Long id, String title, String details, long date, int taskCompleted) {
 		String where = TaskDataBaseHelper.COLUMN_TASK_ID + "=" + id;
 		ContentValues newValues = new ContentValues();
 		newValues.put(TaskDataBaseHelper.COLUMN_TITLE, title);
 		newValues.put(TaskDataBaseHelper.COLUMN_TASK_DETAILS, details);
 		newValues.put(TaskDataBaseHelper.COLUMN_TASK_DATE, date);
-		newValues.put(TaskDataBaseHelper.COLUMN_TASK_COMPLETED, completed);
+		newValues.put(TaskDataBaseHelper.COLUMN_TASK_COMPLETED, taskCompleted);
 		// Insert it into the database.
 		return mDatabase.update(TaskDataBaseHelper.TABLE_TASK, newValues, where, null) != 0;
 	}
 	
+	// cursor a add a task to a row
 	protected Task cursorToTask(Cursor cursor) {
 		Task task = new Task();
 		task.setId(cursor.getLong(0));
