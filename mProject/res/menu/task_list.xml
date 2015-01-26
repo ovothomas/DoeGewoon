@@ -8,4 +8,8 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/new_task"
         android:showAsAction="ifRoom|withText"/>
+    
+   <item
+        android:id="@+id/see_stats"
+        android:title="@string/see_stats"/>
 </menu>

@@ -70,6 +70,10 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 		if (id == R.id.action_add_new_task) {
 			createTask();
 			return true;
+		} else if (id == R.id.see_stats){
+			Intent intent = new Intent(this, TaskStatsActivity.class);
+			startActivity(intent);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -89,7 +93,7 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
+				// delete task
 				if (mDatabase != null){
 					mDatabase.deleteTask(task);
 					mListTasks.remove(task);
@@ -129,8 +133,10 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 			long id) {
 		Task task = mAdapter.getItem(position);
 		Log.d(TAG, "clickedItem : " + task.getTaskTitle());
+		
 		//Start TaskpagerActivity and putExtra Id of the particular fragment
 		Intent i = new Intent(this, TaskPagerActivity.class);
+		
 		// tell TaskFragment which task to display by making the TaskId an Intent extra
 		i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
 		startActivity(i);

@@ -13,11 +13,17 @@
     <string name="task_title">Tasks</string>
     <string name="new_task">Add Task</string>
     <string name="text_view">Click button to enter task</string>
-    <string name="add_task_button">Add task</string>
-    <string name="add_task" >add task</string>
+    <string name="add_task_button">Add</string>
+    <string name="add_task">Add Task</string>
     <string name="delete_task">Delete Task</string>
-     
-   
-    
+    <string name="send_task">Send Task</string>
+    <string name="task_report_subject">Task Message</string>
+    <string name="send_report">Send task message via</string>
+    <string name="task_report_completed">The task is completed</string>
+    <string name="task_report_not_completed">The task is not completed</string>
+    <string name="task_report">Task: %1$s. This task was made on %2$s. %3$s. The tasks details: %4$s.</string>
+    <string name="see_stats">Statistics</string>
+    <string name="title_activity_task_stats">TaskStatsActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

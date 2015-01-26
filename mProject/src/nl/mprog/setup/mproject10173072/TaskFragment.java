@@ -23,10 +23,8 @@ public class TaskFragment extends Fragment {
 	
 	public static final String TAG = "AddTaskActivity";
 	public static final String TAG1 = "Listtask";
-	
 	public static final String EXTRA_TASK_ID =
 			"nl.mprog.setup.mproject10173072.task_id";
-	
 	public static final String DPDIALOG_DATE = "date";
 	public static final String DPDIALOG_TIME = "time";
 	public static final int REQUEST_DATE = 0;
@@ -39,6 +37,7 @@ public class TaskFragment extends Fragment {
 	private Button mTaskDateButton;
 	private CheckBox mTaskCompletedCheckBox;
 	private Button mAddTask;
+	private Button mSendButton;
 	
 	// SQL Database
 	private TaskDataBase mDatabase;
@@ -56,6 +55,7 @@ public class TaskFragment extends Fragment {
 		Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
 		mDatabase = new TaskDataBase(getActivity());
 		mTask = mDatabase.getTaskById(taskId);
+		
 		//Enabling the app icon as Up button 
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);	
 	}
@@ -101,6 +101,7 @@ public class TaskFragment extends Fragment {
 				dialog.show(datepicker, DPDIALOG_DATE);
 			}});
 	
+		// add task to database button
 		mAddTask = (Button)view.findViewById(R.id.addButton);
 		mAddTask.setOnClickListener(new View.OnClickListener(){
 
@@ -108,6 +109,20 @@ public class TaskFragment extends Fragment {
 			public void onClick(View v) {
 				 update();
 			}	 
+		});
+		
+		// send the task by email or sms. your own choosing
+		mSendButton = (Button)view.findViewById(R.id.send_task) ;
+		mSendButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_TEXT, getTaskReport());
+				intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.task_report_subject));
+				startActivity(intent);
+			}
 		});
 		
 		return view;
@@ -152,13 +167,10 @@ public class TaskFragment extends Fragment {
 	   return super.onOptionsItemSelected(item);
 	}
 	
-	@Override
-	public void onDestroy(){
-		super.onDestroy();
-		mDatabase.close();
-	}
-	
+	// function to update the task 
 	private void update(){
+		
+		// getting the variables to store
 		Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
     	String taskTitle =  mTaskTitle.getText().toString();
 		String taskDetails = mTaskDetails.getText().toString();
@@ -176,6 +188,39 @@ public class TaskFragment extends Fragment {
 		Intent intent = new Intent(getActivity(), TaskListActivity.class);
 		startActivity(intent);
 		getActivity().finish();	
-    	
+	}
+	
+	// getting needed information to be able to send
+	private String getTaskReport(){
+		String isCompletedString = null;
+		
+		// see if the task is completed or not
+		boolean task = mTask.getCompleted()!= 0; 
+		if (task){
+			isCompletedString = getString(R.string.task_report_completed);
+		} else {
+			isCompletedString = getString(R.string.task_report_not_completed);
+		}
+		
+		// getting the date
+		String dateString = mTaskDateButton.getText().toString();
+		SimpleDateFormat stf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+		try {
+			stf.parse(dateString);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// string report to send
+		String taskreport = getString(R.string.task_report, mTask.getTaskTitle(), dateString, isCompletedString, mTask.getTaskDetails());
+		
+		return taskreport;
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		mDatabase.close();
 	}
 }

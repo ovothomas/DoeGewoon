@@ -35,7 +35,9 @@ public class NewTaskFragment extends Fragment {
 	private Button mTaskDateButton;
 	private CheckBox mTaskCompletedCheckBox;
 	private Button mAddTask;
+	private Button mSendButton;
 	private Task mTask;
+	
 	 
 	// SQL Database
 	private TaskDataBase mDatabase;
@@ -60,7 +62,6 @@ public class NewTaskFragment extends Fragment {
 		getActivity().finish();		 	
 	}
 
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,11 +75,12 @@ public class NewTaskFragment extends Fragment {
 			Bundle savedInstanceState) {
 		
 		View view = inflater.inflate(R.layout.fragment_task, parent, false);
+		
 		// Wiring up EditText to respond to user input
 		mTaskDetails = (EditText)view.findViewById(R.id.task_details);
+		
 		//Wiring up the edittext to respond to user input
 		mTaskTitle = (EditText)view.findViewById(R.id.task_title);
-		//Setting and wiring completed checkbox
 		
 		// since we are saving in database we cannot save the checkbox as a boolean
 		// so we convert boolean to an integer to be able to save
@@ -100,6 +102,7 @@ public class NewTaskFragment extends Fragment {
 		mTaskDateButton.setText(dateString);
 		mTaskDateButton.setEnabled(false);
 		
+		// Button to add task to database
 		mAddTask = (Button)view.findViewById(R.id.addButton);
 		mAddTask.setOnClickListener(new View.OnClickListener(){
 
@@ -108,6 +111,22 @@ public class NewTaskFragment extends Fragment {
 			addTask();			
 			}	 
 		});
+		
+		// a button to send task
+		mSendButton = (Button)view.findViewById(R.id.send_task) ;
+		mSendButton.setEnabled(false);
+		/*
+		mSendButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_TEXT, getTaskReport());
+				intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.task_report_subject));
+				startActivity(intent);
+			}
+		});*/
 		
 		return view;
 	}
@@ -136,6 +155,30 @@ public class NewTaskFragment extends Fragment {
 	    }
 	    return super.onOptionsItemSelected(item);
 	}
+	
+	/*
+	private String getTaskReport(){
+		String isCompletedString = null;
+		boolean task = mTask.getCompleted()!= 0; 
+		if (task){
+			isCompletedString = getString(R.string.task_report_completed);
+		} else {
+			isCompletedString = getString(R.string.task_report_not_completed);
+		}
+		
+		String dateString = mTaskDateButton.getText().toString();
+		SimpleDateFormat stf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+		try {
+			stf.parse(dateString);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String taskreport = getString(R.string.task_report, mTask.getTaskTitle(), dateString, isCompletedString, mTask.getTaskDetails());
+		
+		return taskreport;	
+	}*/
 	
 	@Override
 	public void onDestroy(){
