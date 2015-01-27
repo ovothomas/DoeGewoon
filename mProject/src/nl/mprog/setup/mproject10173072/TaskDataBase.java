@@ -56,7 +56,6 @@ public class TaskDataBase {
 		initialValues.put(TaskDataBaseHelper.COLUMN_TASK_DATE, date);
 		initialValues.put(TaskDataBaseHelper.COLUMN_TASK_COMPLETED, completed);
 		
-
 		long insertId = mDatabase
 				.insert(TaskDataBaseHelper.TABLE_TASK, null, initialValues);
 	
@@ -97,13 +96,53 @@ public class TaskDataBase {
 			cursor.close();
 		}
 		return listTask;
+	}
+	
+	public List<Task> getAllCompletedTasks(){
+		List<Task> completedTasks = new ArrayList<Task>();
+		Cursor cursor = mDatabase.query(TaskDataBaseHelper.TABLE_TASK, mAllColumns,
+				TaskDataBaseHelper.COLUMN_TASK_COMPLETED + " = ?",	
+				new String[] { "1" }, null, null, null);
+		if (cursor != null){
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()){
+				Task task = cursorToTask(cursor);
+				completedTasks.add(task);
+				cursor.moveToNext();	
+			}
+			
+			// make sure to close cursor
+			cursor.close();
+		}
+		return completedTasks;	
 		
+	}
+	
+	// get completed tasks
+	public List<Date> getCountCompleted(){
+		List<Date> getCountDate = new ArrayList<Date>();
+		
+		Cursor cursor = mDatabase.rawQuery("SELECT COUNT( " + TaskDataBaseHelper.COLUMN_TASK_DATE + "), " +  TaskDataBaseHelper.COLUMN_TASK_DATE +  " FROM " + TaskDataBaseHelper.TABLE_TASK + " WHERE " 
+		+ TaskDataBaseHelper.COLUMN_TASK_COMPLETED + " = ? GROUP BY " + TaskDataBaseHelper.COLUMN_TASK_DATE, new String[] { "1" });
+		
+		if (cursor != null){
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()){
+				Date date  = cursorToDate(cursor);
+				getCountDate.add(date);
+				cursor.moveToNext();	
+			}
+			
+			// make sure to close cursor
+			cursor.close();
+		}
+		return getCountDate;	
 	}
 	
 	// getting a specific tasks
 	public Task getTaskById(Long id) {
 		Cursor cursor = mDatabase.query(TaskDataBaseHelper.TABLE_TASK, mAllColumns,
-				TaskDataBaseHelper.COLUMN_TASK_ID + " = ?",
+				TaskDataBaseHelper.COLUMN_TASK_ID + " = ?",	
 				new String[] { String.valueOf(id) }, null, null, null);
 		if (cursor != null) {
 			cursor.moveToFirst();
@@ -125,7 +164,7 @@ public class TaskDataBase {
 		return mDatabase.update(TaskDataBaseHelper.TABLE_TASK, newValues, where, null) != 0;
 	}
 	
-	// cursor a add a task to a row
+	// cursor and add a task to a row
 	protected Task cursorToTask(Cursor cursor) {
 		Task task = new Task();
 		task.setId(cursor.getLong(0));
@@ -135,5 +174,13 @@ public class TaskDataBase {
 		task.setCompleted(cursor.getInt(4));
 		
 		return task;
-	}	 	 
+	}	
+	
+	// cursor and add date to a row
+	protected Date cursorToDate(Cursor cursor){
+		Date date = new Date();
+		date.setCount(cursor.getInt(0));
+		date.setTaskDate(cursor.getLong(1));
+		return date;
+	}
 }

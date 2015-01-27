@@ -37,7 +37,6 @@ public class TaskPagerActivity extends FragmentActivity {
 			// fetch the task instance for that particular position
 			// and use its ID to create and return a properly configured
 			// TaskFragment
-			
 			@Override
 			public Fragment getItem(int pos) {
 				// TODO Auto-generated method stub
@@ -64,7 +63,6 @@ public class TaskPagerActivity extends FragmentActivity {
 				mTaskViewPager.setCurrentItem(x);
 			}
 		}
-		
 		
 		// See the title of the task on the action bar
 		mTaskViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

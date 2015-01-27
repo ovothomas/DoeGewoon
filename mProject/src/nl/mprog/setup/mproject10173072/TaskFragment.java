@@ -130,7 +130,6 @@ public class TaskFragment extends Fragment {
 	
 	// Attach arguments bundle to a fragment
 	public static TaskFragment newInstance(Long l){
-		
 		Bundle args = new Bundle();
 		args.putSerializable(EXTRA_TASK_ID, l);
 		
@@ -139,7 +138,6 @@ public class TaskFragment extends Fragment {
 		fragment.setArguments(args);
 		
 		return fragment;
-		
 	}
 
 	@Override
@@ -185,8 +183,8 @@ public class TaskFragment extends Fragment {
 		}
 		long date = stf.getCalendar().getTimeInMillis();
 		mDatabase.updateTaskById(taskId, taskTitle, taskDetails, date, taskCompleted );
-		Intent intent = new Intent(getActivity(), TaskListActivity.class);
-		startActivity(intent);
+		//Intent intent = new Intent(getActivity(), TaskListActivity.class);
+		//startActivity(intent);
 		getActivity().finish();	
 	}
 	

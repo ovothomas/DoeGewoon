@@ -41,16 +41,15 @@ public class DatePickerFragment extends DialogFragment {
 		
 		DatePickerDialog datepicker = new DatePickerDialog(getActivity(), new
 				DatePickerDialog.OnDateSetListener() {
-					
-					@Override
-					public void onDateSet(DatePicker view, int year, int monthOfYear,
-							int dayOfMonth) {
-						mDate = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis();
-						sendResult(Activity.RESULT_OK);
-						
-					}
-				}, mYear, mMonth, mDay);
-			return datepicker;
+		
+				@Override
+				public void onDateSet(DatePicker view, int year, int monthOfYear,
+						int dayOfMonth) {
+					mDate = new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis();
+					sendResult(Activity.RESULT_OK);	
+				}
+			}, mYear, mMonth, mDay);
+		return datepicker;
 	}
 	
 	// send data result

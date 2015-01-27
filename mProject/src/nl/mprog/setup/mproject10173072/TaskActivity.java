@@ -27,7 +27,6 @@ public class TaskActivity extends FragmentActivity {
 	}
 	
 	protected Fragment createFragment() {
-		
 		//retrieve the extra from CrimeActivity's intent 
 		//and pass it into CrimeFragment.newInstance(UUID).
 		Long taskId = (Long)getIntent().getSerializableExtra(NewTaskFragment.EXTRA_TASK_ID);
@@ -44,9 +43,6 @@ public class TaskActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;

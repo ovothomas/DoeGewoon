@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,7 +23,6 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 	private TaskDataBase mDatabase;
 	private TaskListAdapter mAdapter;
 	private ListView mListView;
-	public static final int REQUEST_CODE_ADD_TASK = 40;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,6 +30,7 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 		
 		//configuring the actionbar
 		getActionBar().setTitle(R.string.task_title);
+		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 0, 255, 0)));
 		
 		//Initialize view
 		initViews();
@@ -36,10 +38,10 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 		// open database and set the listadapter to display tasks in it
 		mDatabase= new TaskDataBase(this);
 		mListTasks = mDatabase.getAllTasks();
-		mAdapter = new TaskListAdapter(this, mListTasks);
+		mAdapter = new TaskListAdapter(this, mListTasks, mDatabase);
 		mListView.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
-}
+	}
 	
 	// method to initialize the views
 	private void initViews(){
@@ -105,7 +107,7 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 			}
 		});
 		
-		 // set neutral button OK
+		// set neutral button OK
         alertDialogBuilder.setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
