@@ -12,14 +12,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ListStatsAdapter extends BaseAdapter {
+public class StatsListAdapter extends BaseAdapter {
 	Context context;
 	Calendar calendar = Calendar.getInstance(); 
 	
 	private List<Date> mItems;
 	private LayoutInflater mInflater;
 	
-	public ListStatsAdapter(Context context, List<Date> listDates) {
+	public StatsListAdapter(Context context, List<Date> listDates) {
 		this.setItems(listDates);
 		this.mInflater = LayoutInflater.from(context);
 	}

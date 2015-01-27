@@ -37,7 +37,7 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 		
 		// open database and set the listadapter to display tasks in it
 		mDatabase= new TaskDataBase(this);
-		mListTasks = mDatabase.getAllTasks();
+		mListTasks = mDatabase.getUncompletedTask();
 		mAdapter = new TaskListAdapter(this, mListTasks, mDatabase);
 		mListView.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
@@ -53,7 +53,7 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 	@Override
 	public void onResume(){
 		super.onResume();
-		mListTasks = mDatabase.getAllTasks();
+		mListTasks = mDatabase.getUncompletedTask();
 		mAdapter.setItems(mListTasks);
 		mAdapter.notifyDataSetChanged();
 	}
@@ -76,6 +76,9 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 			Intent intent = new Intent(this, TaskStatsActivity.class);
 			startActivity(intent);
 			return true;
+		} else if (id == R.id.see_completed){
+			Intent intent = new Intent(this, TaskCompletedListActivity.class);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -142,7 +145,8 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 		// tell TaskFragment which task to display by making the TaskId an Intent extra
 		i.putExtra(TaskFragment.EXTRA_TASK_ID, task.getId());
 		startActivity(i);
-	} 
+	}
+	
 	@Override
 	public void onDestroy(){
 		super.onDestroy();

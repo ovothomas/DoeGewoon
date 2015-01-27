@@ -8,7 +8,7 @@ import android.widget.ListView;
 
 public class TaskStatsActivity extends Activity {
 	private List<Date> mListDates;
-	private ListStatsAdapter mAdapter;
+	private StatsListAdapter mAdapter;
 	private ListView mListView;
 	private TaskDataBase mDatabase;
 	
@@ -20,7 +20,7 @@ public class TaskStatsActivity extends Activity {
 		
 		mDatabase = new TaskDataBase(this);
 		mListDates = mDatabase.getCountCompleted();
-		mAdapter = new ListStatsAdapter(this, mListDates);
+		mAdapter = new StatsListAdapter(this, mListDates);
 		mListView.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
 	}

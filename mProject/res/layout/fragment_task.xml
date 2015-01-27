@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#491014" >
     
     <TextView 
         android:layout_height ="wrap_content"
@@ -26,6 +27,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="16dp"
 		android:layout_marginRight="16dp"
+		android:background="@drawable/button_shape"
 	/>
     
 	<CheckBox 
@@ -67,7 +69,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_width = "wrap_content"
 		    android:layout_marginLeft = "16dp"
-	        android:layout_marginRight = "16dp"/>
+	        android:layout_marginRight = "16dp"
+	        android:background="@drawable/button_shape"/>
 
 		<Button
 		    android:id="@+id/send_task"
@@ -76,7 +79,8 @@
 		    android:layout_alignParentRight="true"
 		    android:layout_alignParentTop="true"
 		    android:layout_marginRight="15dp"
-		    android:text="@string/send_task" />
+		    android:text="@string/send_task"
+		    android:background="@drawable/button_shape" />
 		
 	</RelativeLayout> 
     

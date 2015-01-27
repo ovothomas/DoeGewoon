@@ -124,7 +124,6 @@ public class TaskFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
-		
 		return view;
 	}
 	
@@ -183,8 +182,6 @@ public class TaskFragment extends Fragment {
 		}
 		long date = stf.getCalendar().getTimeInMillis();
 		mDatabase.updateTaskById(taskId, taskTitle, taskDetails, date, taskCompleted );
-		//Intent intent = new Intent(getActivity(), TaskListActivity.class);
-		//startActivity(intent);
 		getActivity().finish();	
 	}
 	
@@ -211,7 +208,8 @@ public class TaskFragment extends Fragment {
 		}
 		
 		// string report to send
-		String taskreport = getString(R.string.task_report, mTask.getTaskTitle(), dateString, isCompletedString, mTask.getTaskDetails());
+		String taskreport = getString(R.string.task_report, mTask.getTaskTitle(), dateString, 
+				isCompletedString, mTask.getTaskDetails());
 		
 		return taskreport;
 	}

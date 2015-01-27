@@ -23,7 +23,9 @@
     <string name="task_report_not_completed">The task is not completed</string>
     <string name="task_report">Task: %1$s. This task was made on %2$s. %3$s. The tasks details: %4$s.</string>
     <string name="see_stats">Statistics</string>
+    <string name="see_completed">Completed Tasks</string>
     <string name="title_activity_task_stats">TaskStatsActivity</string>
     <string name="task_label_stats">STATS</string>
+    <string name="title_activity_task_completed">Completed</string>
 
 </resources>

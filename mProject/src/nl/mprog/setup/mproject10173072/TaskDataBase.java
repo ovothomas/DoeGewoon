@@ -98,6 +98,29 @@ public class TaskDataBase {
 		return listTask;
 	}
 	
+	// get uncompleted Tasks
+	public List<Task> getUncompletedTask(){
+		List<Task> listUncompletedTask = new ArrayList<Task>();
+		
+		Cursor cursor = mDatabase.query(TaskDataBaseHelper.TABLE_TASK, mAllColumns, 
+				TaskDataBaseHelper.COLUMN_TASK_COMPLETED + " = ?",
+				new String[] { "0" }, null, null, null);
+		if (cursor != null){
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()){
+				Task task = cursorToTask(cursor);
+				listUncompletedTask.add(task);
+				cursor.moveToNext();	
+			}
+			
+			// make sure to close cursor
+			cursor.close();
+		}
+		return listUncompletedTask;
+	}
+				
+	
+	// get all the tasks
 	public List<Task> getAllCompletedTasks(){
 		List<Task> completedTasks = new ArrayList<Task>();
 		Cursor cursor = mDatabase.query(TaskDataBaseHelper.TABLE_TASK, mAllColumns,

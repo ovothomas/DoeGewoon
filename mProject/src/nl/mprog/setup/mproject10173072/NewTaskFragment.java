@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -27,7 +26,6 @@ public class NewTaskFragment extends Fragment {
 	public static final String DPDIALOG_DATE = "date";
 	public static final String DPDIALOG_TIME = "time";
 	public static final int REQUEST_DATE = 0;
-	public static final int REQUEST_TIME = 1;
 	
 	//member variable for Task
 	private EditText mTaskTitle;
@@ -38,7 +36,6 @@ public class NewTaskFragment extends Fragment {
 	private Button mSendButton;
 	private Task mTask;
 	
-	 
 	// SQL Database
 	private TaskDataBase mDatabase;
 	Calendar calendar = Calendar.getInstance(); 
@@ -57,8 +54,6 @@ public class NewTaskFragment extends Fragment {
 		}
 		long time = sdf.getCalendar().getTimeInMillis();
 		mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time, taskCompleted);	
-		Intent intent = new Intent(getActivity(), TaskListActivity.class);
-		startActivity(intent);
 		getActivity().finish();		 	
 	}
 
@@ -115,18 +110,6 @@ public class NewTaskFragment extends Fragment {
 		// a button to send task
 		mSendButton = (Button)view.findViewById(R.id.send_task) ;
 		mSendButton.setEnabled(false);
-		/*
-		mSendButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_SEND);
-				intent.setType("text/plain");
-				intent.putExtra(Intent.EXTRA_TEXT, getTaskReport());
-				intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.task_report_subject));
-				startActivity(intent);
-			}
-		});*/
 		
 		return view;
 	}
@@ -155,30 +138,6 @@ public class NewTaskFragment extends Fragment {
 	    }
 	    return super.onOptionsItemSelected(item);
 	}
-	
-	/*
-	private String getTaskReport(){
-		String isCompletedString = null;
-		boolean task = mTask.getCompleted()!= 0; 
-		if (task){
-			isCompletedString = getString(R.string.task_report_completed);
-		} else {
-			isCompletedString = getString(R.string.task_report_not_completed);
-		}
-		
-		String dateString = mTaskDateButton.getText().toString();
-		SimpleDateFormat stf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
-		try {
-			stf.parse(dateString);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		String taskreport = getString(R.string.task_report, mTask.getTaskTitle(), dateString, isCompletedString, mTask.getTaskDetails());
-		
-		return taskreport;	
-	}*/
 	
 	@Override
 	public void onDestroy(){
