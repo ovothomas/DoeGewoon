@@ -1,4 +1,9 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * DatePickerFragment is a dialog where 
+ * the user can change the date of a 
+ * particular task.
+ */
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -15,13 +20,15 @@ public class DatePickerFragment extends DialogFragment {
 	public static final String EXTRA_DATE = 
 			"nl.mprog.setup.mproject10173072.date";
 	
+	// variables
 	private long mDate;
 	private int mYear, mMonth, mDay;
 	
+	// stash date in an argument bundle where the DatePickerFragment can
+	// access it
 	public static DatePickerFragment newInstance(long l){
 		Bundle args = new Bundle();
 		args.putSerializable(EXTRA_DATE, l);
-		
 		DatePickerFragment fragment = new DatePickerFragment();
 		fragment.setArguments(args);
 		
@@ -30,15 +37,17 @@ public class DatePickerFragment extends DialogFragment {
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
+		// getting the arguments
 		mDate = (Long)getArguments().getSerializable(EXTRA_DATE);
 		
-		// Use the current date as the default date in the picker
+		// Creating a Calendar to get the year, month and day of date
 		final Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(mDate);
 		mYear = calendar.get(Calendar.YEAR);
 		mMonth = calendar.get(Calendar.MONTH);
 		mDay = calendar.get(Calendar.DAY_OF_MONTH);
 		
+		// initializing datepicker
 		DatePickerDialog datepicker = new DatePickerDialog(getActivity(), new
 				DatePickerDialog.OnDateSetListener() {
 		
@@ -52,7 +61,7 @@ public class DatePickerFragment extends DialogFragment {
 		return datepicker;
 	}
 	
-	// send data result
+	// send data result back to TaskFragment
 	private void sendResult(int resultCode){
 		if (getTargetFragment() == null)
 			return;

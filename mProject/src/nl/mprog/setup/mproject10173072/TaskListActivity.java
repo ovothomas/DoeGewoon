@@ -1,5 +1,8 @@
 package nl.mprog.setup.mproject10173072;
-
+/*
+ * Activity to show a list
+ * of tasks in the List array
+ */
 import java.util.List;
 
 import android.app.Activity;
@@ -119,11 +122,12 @@ public class TaskListActivity extends Activity implements android.widget.Adapter
 			}
 		});
         
+        // create and show dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
-        // show alert
         alertDialog.show();
 	}
 
+	// show the dialog for the user to delete the task
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {

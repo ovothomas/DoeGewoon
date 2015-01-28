@@ -1,14 +1,16 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * This Activity is openen when a task
+ * is being created.
+ */
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,19 +29,20 @@ public class NewTaskFragment extends Fragment {
 	public static final String DPDIALOG_TIME = "time";
 	public static final int REQUEST_DATE = 0;
 	
-	//member variable for Task
+	// member variable for Task
 	private EditText mTaskTitle;
 	private EditText mTaskDetails;
 	private Button mTaskDateButton;
-	private CheckBox mTaskCompletedCheckBox;
 	private Button mAddTask;
 	private Button mSendButton;
+	private CheckBox mTaskCompletedCheckBox;
 	private Task mTask;
 	
 	// SQL Database
 	private TaskDataBase mDatabase;
 	Calendar calendar = Calendar.getInstance(); 
 	
+	// method to add a task to database
 	private void addTask(){
 		Editable taskTitle =  mTaskTitle.getText();
 		Editable taskDetails = mTaskDetails.getText();
@@ -68,7 +71,6 @@ public class NewTaskFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
-		
 		View view = inflater.inflate(R.layout.fragment_task, parent, false);
 		
 		// Wiring up EditText to respond to user input
@@ -77,8 +79,8 @@ public class NewTaskFragment extends Fragment {
 		//Wiring up the edittext to respond to user input
 		mTaskTitle = (EditText)view.findViewById(R.id.task_title);
 		
-		// since we are saving in database we cannot save the checkbox as a boolean
-		// so we convert boolean to an integer to be able to save
+		// since we are saving in database we cannot save the checkbox 
+		// as a boolean so we convert boolean to an integer
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
 		mTaskCompletedCheckBox.setOnClickListener(new View.OnClickListener() {
 			
@@ -90,7 +92,8 @@ public class NewTaskFragment extends Fragment {
 			}
 		});
 		
-		//Setting and wiring the date button to show date in custom format
+		// Setting and wiring the date button to show date in custom format
+		// when the task is being created at first
 		mTaskDateButton = (Button)view.findViewById(R.id.task_date);
 		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
 		String dateString = sdf.format(calendar.getTimeInMillis());   
@@ -115,28 +118,16 @@ public class NewTaskFragment extends Fragment {
 	}
 	
 	// Attach arguments bundle to a fragment
+	// contains the id of a task so the viewpager
+	// will make that particular task
 	public static NewTaskFragment newInstance(Long l){
-		
 		Bundle args = new Bundle();
 		args.putSerializable(EXTRA_TASK_ID, l);
 		
 		// create Fragment instance of that particular id
 		NewTaskFragment fragment = new NewTaskFragment();
 		fragment.setArguments(args);
-		
 		return fragment;	
-	}
-
-	// using the actionbar to navigate to the homepage
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	    // Respond to the action bar's Up/Home button
-	    case android.R.id.home:
-	    	 addTask();
-	        return true;
-	    }
-	    return super.onOptionsItemSelected(item);
 	}
 	
 	@Override

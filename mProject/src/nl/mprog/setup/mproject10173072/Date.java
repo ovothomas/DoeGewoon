@@ -1,5 +1,11 @@
 package nl.mprog.setup.mproject10173072;
 
+/*
+ *  This is an object created for my database
+ *  to be able to get the total number of
+ *  distinct dates in my database.
+ */
+
 public class Date {
 	private long mTaskDate;
 	private int mCount;

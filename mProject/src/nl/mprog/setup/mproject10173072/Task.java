@@ -1,14 +1,12 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * This is an instance of a single task when it 
+ * is created. Task has unique identifier, a title,
+ * an editbox in which the task details will be
+ * stored, date and if the task is completed.
+ */
 
 public class Task {
-	
-	/*
-	 * This is an instance of a single task when it 
-	 * is created. Task has unique identifier, a title,
-	 * an editbox in which the task details will be
-	 * stored, date and if the task is completed.
-	 */
-	
 	//creating members
 	private Long mId;
 	private String mTaskTitle;
@@ -17,7 +15,6 @@ public class Task {
 	private String mTaskDetails;
 	
 	public Task(){
-		
 	}
 	
 	@Override

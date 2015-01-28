@@ -1,7 +1,10 @@
 package nl.mprog.setup.mproject10173072;
-
+/*
+ * Viewpager activity the helps
+ * view the listarray through sliding
+ * left and right
+ */
 import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -69,7 +72,6 @@ public class TaskPagerActivity extends FragmentActivity {
 			public void onPageScrollStateChanged(int state) { }
 			
 			public void onPageScrolled(int pos, float posOffset, int posOffsetPixels) { }
-			
 			public void onPageSelected(int pos) {
 				Task task = mListTasks.get(pos);
 				if (task.getTaskTitle() != null) {

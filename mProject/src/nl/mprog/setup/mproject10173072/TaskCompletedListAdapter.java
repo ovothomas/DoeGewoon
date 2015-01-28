@@ -1,4 +1,8 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * ListAdapter to hold information
+ * for the taskcompleted.
+ */
 
 import java.util.Calendar;
 import java.util.List;
@@ -52,7 +56,7 @@ public class TaskCompletedListAdapter extends BaseAdapter {
 		// get item position
 		final Task currentItem = getItem(position);
 		
-		//look for the view to populate with data
+		// look for the view to populate with data
 		TextView tvTitle = (TextView)convertView.findViewById(R.id.task_titleTextView);
 		TextView tvDate = (TextView)convertView.findViewById(R.id.task_dateTextView);
 		CheckBox checkBox = (CheckBox)convertView.findViewById(R.id.task_completed_checkbox);
@@ -63,6 +67,7 @@ public class TaskCompletedListAdapter extends BaseAdapter {
 		checkBox.setChecked(currentItem.getCompleted() != 0);
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
+			// when the tasks is unchecked the task is removed from the list
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
@@ -75,7 +80,6 @@ public class TaskCompletedListAdapter extends BaseAdapter {
 				}
 			}	
 		});
-		
 		return convertView;
 	}
 	

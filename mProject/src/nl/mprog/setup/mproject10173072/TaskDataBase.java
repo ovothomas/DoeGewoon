@@ -1,5 +1,10 @@
 package nl.mprog.setup.mproject10173072;
-
+/*
+ * This activity creates the table for the database
+ * It also contains methods to retrieve all the
+ * tasks from the database table, delete a task,
+ * or update a task.
+ */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +18,7 @@ import android.util.Log;
 public class TaskDataBase {
 	
 	//for logging
-	private static final String TAG = "TaskDAO";
-	
+	private static final String TAG = "TaskDatabase";
 	private SQLiteDatabase mDatabase;
 	private TaskDataBaseHelper mTaskDataBaseHelper;
 	private Context context;
@@ -58,7 +62,6 @@ public class TaskDataBase {
 		
 		long insertId = mDatabase
 				.insert(TaskDataBaseHelper.TABLE_TASK, null, initialValues);
-	
 		Cursor cursor = mDatabase.query(TaskDataBaseHelper.TABLE_TASK, mAllColumns,
 				TaskDataBaseHelper.COLUMN_TASK_ID+ " = " + insertId, null, null,
 				null, null);
@@ -68,7 +71,6 @@ public class TaskDataBase {
 		// close cursor
 		cursor.close();
 		return newTask;
-		
 	}
 	
 	// function to deletask in the database
@@ -119,7 +121,6 @@ public class TaskDataBase {
 		return listUncompletedTask;
 	}
 				
-	
 	// get all the tasks
 	public List<Task> getAllCompletedTasks(){
 		List<Task> completedTasks = new ArrayList<Task>();
@@ -137,8 +138,7 @@ public class TaskDataBase {
 			// make sure to close cursor
 			cursor.close();
 		}
-		return completedTasks;	
-		
+		return completedTasks;		
 	}
 	
 	// get completed tasks
@@ -183,6 +183,7 @@ public class TaskDataBase {
 		newValues.put(TaskDataBaseHelper.COLUMN_TASK_DETAILS, details);
 		newValues.put(TaskDataBaseHelper.COLUMN_TASK_DATE, date);
 		newValues.put(TaskDataBaseHelper.COLUMN_TASK_COMPLETED, taskCompleted);
+		
 		// Insert it into the database.
 		return mDatabase.update(TaskDataBaseHelper.TABLE_TASK, newValues, where, null) != 0;
 	}
@@ -195,7 +196,6 @@ public class TaskDataBase {
 		task.setTaskDetails(cursor.getString(2));
 		task.setTaskDate(cursor.getLong(3));
 		task.setCompleted(cursor.getInt(4));
-		
 		return task;
 	}	
 	

@@ -1,4 +1,9 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * TaskListAdapter holds the list 
+ * of tasks to be populated in a
+ * listview
+ */
 
 import java.util.Calendar;
 import java.util.List;
@@ -19,6 +24,7 @@ public class TaskListAdapter extends BaseAdapter {
 	Calendar calendar = Calendar.getInstance(); 
 	public static final String TAG = "ListTaskAdapter";
 	
+	// member variables
 	private List<Task> mItems;
 	private LayoutInflater mInflater;
 	private TaskDataBase mDatabase;
@@ -62,6 +68,7 @@ public class TaskListAdapter extends BaseAdapter {
 		checkBox.setChecked(currentItem.getCompleted() != 0);
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
+			// when the task is checked removed from list
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
@@ -74,7 +81,6 @@ public class TaskListAdapter extends BaseAdapter {
 				}
 			}	
 		});
-		
 		return convertView;
 	}
 	

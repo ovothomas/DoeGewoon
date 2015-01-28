@@ -1,8 +1,11 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * Here is where a task is created through fragments.
+ * The task information can be added here
+ */
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,24 +23,21 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class TaskFragment extends Fragment {
-	
 	public static final String TAG = "AddTaskActivity";
 	public static final String TAG1 = "Listtask";
 	public static final String EXTRA_TASK_ID =
 			"nl.mprog.setup.mproject10173072.task_id";
 	public static final String DPDIALOG_DATE = "date";
-	public static final String DPDIALOG_TIME = "time";
 	public static final int REQUEST_DATE = 0;
-	public static final int REQUEST_TIME = 1;
 	
 	//member variable for Task
 	private Task mTask;
 	private EditText mTaskTitle;
 	private EditText mTaskDetails;
 	private Button mTaskDateButton;
-	private CheckBox mTaskCompletedCheckBox;
 	private Button mAddTask;
 	private Button mSendButton;
+	private CheckBox mTaskCompletedCheckBox;
 	
 	// SQL Database
 	private TaskDataBase mDatabase;
@@ -135,7 +135,6 @@ public class TaskFragment extends Fragment {
 		// create Fragment instance of that particular id
 		TaskFragment fragment = new TaskFragment();
 		fragment.setArguments(args);
-		
 		return fragment;
 	}
 
@@ -210,7 +209,6 @@ public class TaskFragment extends Fragment {
 		// string report to send
 		String taskreport = getString(R.string.task_report, mTask.getTaskTitle(), dateString, 
 				isCompletedString, mTask.getTaskDetails());
-		
 		return taskreport;
 	}
 	

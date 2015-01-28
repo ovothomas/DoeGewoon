@@ -16,6 +16,7 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/task_stats_date"
 		android:layout_marginLeft="16dp"
-		android:layout_marginRight="16dp"/>
+		android:layout_marginRight="16dp"
+		android:textSize="20sp"/>
      
 </RelativeLayout>

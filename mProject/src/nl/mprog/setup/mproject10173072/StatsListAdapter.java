@@ -1,4 +1,9 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * Adapter to hold information
+ * on how many task were completed
+ * on a particular day
+ */
 
 import java.util.Calendar;
 import java.util.List;
@@ -16,6 +21,7 @@ public class StatsListAdapter extends BaseAdapter {
 	Context context;
 	Calendar calendar = Calendar.getInstance(); 
 	
+	//variables
 	private List<Date> mItems;
 	private LayoutInflater mInflater;
 	
@@ -41,7 +47,6 @@ public class StatsListAdapter extends BaseAdapter {
 		Date currentItem = getItem(position);
 		
 		//look for the view to populate with data
-	
 		Button buttonDate = (Button)convertView.findViewById(R.id.task_stats_date);
 		TextView tvCount = (TextView)convertView.findViewById(R.id.task_stats_view);
 		 
@@ -63,7 +68,6 @@ public class StatsListAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

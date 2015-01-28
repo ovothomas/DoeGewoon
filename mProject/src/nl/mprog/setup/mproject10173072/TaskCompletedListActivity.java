@@ -1,4 +1,9 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * This activity handles the listview
+ * of the task completed. The user
+ * can see the tasks completed.
+ */
 
 import java.util.List;
 
@@ -15,14 +20,12 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 public class TaskCompletedListActivity extends Activity implements OnItemLongClickListener{
-	
 	// variables
 	private List<Task>	mCompletedListTasks;
 	private TaskDataBase mDatabase;
 	private TaskCompletedListAdapter mAdapter;
 	private ListView mListView;
 	
-
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_task_list);
@@ -40,7 +43,6 @@ public class TaskCompletedListActivity extends Activity implements OnItemLongCli
 		mAdapter = new TaskCompletedListAdapter(this, mCompletedListTasks, mDatabase);
 		mListView.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
-
 	}
 	
 	// initiate views
@@ -54,7 +56,6 @@ public class TaskCompletedListActivity extends Activity implements OnItemLongCli
 			int position, long id) {
 		Task task = mAdapter.getItem(position);
 		showDeleteDialogConfirmation(task);
-		
 		return true;
 	}
 	
@@ -71,6 +72,7 @@ public class TaskCompletedListActivity extends Activity implements OnItemLongCli
 		mDatabase.close();
 	}
 	
+	// show the user a dialog to delete a task
 	private void showDeleteDialogConfirmation(final Task task){
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("DELETE");

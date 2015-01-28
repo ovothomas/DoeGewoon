@@ -1,4 +1,8 @@
 package nl.mprog.setup.mproject10173072;
+/*
+ * Statistics to show the task completed
+ * grouped by date.
+ */
 
 import java.util.List;
 
@@ -18,6 +22,8 @@ public class TaskStatsActivity extends Activity {
 		
 		this.mListView = (ListView)findViewById(R.id.list_stats);
 		
+		// connect with the database and set the adapter to it
+		// by getting the completed task
 		mDatabase = new TaskDataBase(this);
 		mListDates = mDatabase.getCountCompleted();
 		mAdapter = new StatsListAdapter(this, mListDates);
