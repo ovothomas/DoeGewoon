@@ -19,7 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-public class TaskListAdapter extends BaseAdapter {
+public class TaskUncompletedListAdapter extends BaseAdapter {
 	Context context;
 	Calendar calendar = Calendar.getInstance(); 
 	public static final String TAG = "ListTaskAdapter";
@@ -29,7 +29,7 @@ public class TaskListAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private TaskDataBase mDatabase;
 	
-	public TaskListAdapter(Context context, List<Task> listTasks, TaskDataBase database) {
+	public TaskUncompletedListAdapter(Context context, List<Task> listTasks, TaskDataBase database) {
 		this.setItems(listTasks);
 		this.mInflater = LayoutInflater.from(context);
 		this.mDatabase = database;

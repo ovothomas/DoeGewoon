@@ -32,7 +32,7 @@ public class TaskCompletedListActivity extends Activity implements OnItemLongCli
 		
 		//configure the actionbar
 		getActionBar().setTitle(R.string.task_title);
-		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 0, 255, 0)));
+		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 164, 9, 9)));
 		
 		// Initiate the views
 		initViews();

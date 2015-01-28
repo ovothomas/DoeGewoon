@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#555555"
-    tools:context=".TaskListActivity" >
+    android:background="#A40909"
+    tools:context=".TaskUncompletedListActivity" >
 
     <CheckBox
         android:id="@+id/task_completed_checkbox"
@@ -19,7 +19,7 @@
         android:id="@+id/task_titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#556699"
+        android:textColor="#000000"
         android:textSize="20dp"
         android:layout_toRightOf="@id/task_completed_checkbox"
         android:paddingLeft="4dp"
@@ -36,7 +36,7 @@
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:paddingTop="4dp"
-        android:textColor="#556699"
+        android:textColor="#000000"
         android:text="Task date" />
 
 </RelativeLayout>

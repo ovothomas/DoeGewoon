@@ -23,8 +23,8 @@ public class TaskDataBase {
 	private TaskDataBaseHelper mTaskDataBaseHelper;
 	private Context context;
 	private String[] mAllColumns = {
-			TaskDataBaseHelper.COLUMN_TASK_ID, TaskDataBaseHelper.COLUMN_TITLE, TaskDataBaseHelper.COLUMN_TASK_DETAILS, TaskDataBaseHelper.COLUMN_TASK_DATE,
-			TaskDataBaseHelper.COLUMN_TASK_COMPLETED};
+			TaskDataBaseHelper.COLUMN_TASK_ID, TaskDataBaseHelper.COLUMN_TITLE, TaskDataBaseHelper.COLUMN_TASK_DETAILS, 
+			TaskDataBaseHelper.COLUMN_TASK_DATE, TaskDataBaseHelper.COLUMN_TASK_COMPLETED};
 
 	public TaskDataBase(Context context){
 		this.context = context;

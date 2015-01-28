@@ -70,7 +70,7 @@ public class TaskPagerActivity extends FragmentActivity {
 		// See the title of the task on the action bar
 		mTaskViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			public void onPageScrollStateChanged(int state) { }
-			
+	
 			public void onPageScrolled(int pos, float posOffset, int posOffsetPixels) { }
 			public void onPageSelected(int pos) {
 				Task task = mListTasks.get(pos);
