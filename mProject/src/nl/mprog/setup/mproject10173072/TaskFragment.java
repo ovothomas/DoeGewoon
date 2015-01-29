@@ -1,11 +1,15 @@
 package nl.mprog.setup.mproject10173072;
 /*
  * Here is where a task is created through fragments.
- * The task information can be added here
+ * The task information can be added and editted here.
+ * The user can chage the date or information about the task.
+ * When a task is clicked from the UncompletedActivity this 
+ * fragment creates that speific task with the help of its id
  */
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -105,7 +108,7 @@ public class TaskFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				 update();
+				 updateTask();
 			}	 
 		});
 		
@@ -155,15 +158,15 @@ public class TaskFragment extends Fragment {
 	    case android.R.id.home:
 	    	if (NavUtils.getParentActivityName(getActivity()) != null){
 	    	NavUtils.navigateUpFromSameTask(getActivity());
-	    	update();
+	    	updateTask();
 	        return true;
 	        }
 	    }
-	   return super.onOptionsItemSelected(item);
+	    return super.onOptionsItemSelected(item);
 	}
 	
 	// function to update the task 
-	private void update(){
+	private void updateTask(){
 		
 		// getting the variables to store
 		Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
@@ -175,7 +178,6 @@ public class TaskFragment extends Fragment {
 		try {
 			stf.parse(dateString);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long date = stf.getCalendar().getTimeInMillis();
@@ -201,7 +203,6 @@ public class TaskFragment extends Fragment {
 		try {
 			stf.parse(dateString);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

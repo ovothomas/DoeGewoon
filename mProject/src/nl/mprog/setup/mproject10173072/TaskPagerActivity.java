@@ -31,7 +31,7 @@ public class TaskPagerActivity extends FragmentActivity {
 		
 		//get data from database
 		mDatabase = new TaskDataBase(this);
-		mListTasks = mDatabase.getAllTasks();
+		mListTasks = mDatabase.getUncompletedTasks();
 		
 		//getting activities instance of FragmentManager
 		FragmentManager fm = getSupportFragmentManager();
@@ -50,7 +50,6 @@ public class TaskPagerActivity extends FragmentActivity {
 			// return how many items are in the arraylist
 			@Override
 			public int getCount() {
-				// TODO Auto-generated method stub
 				return mListTasks.size();
 			}
 		});

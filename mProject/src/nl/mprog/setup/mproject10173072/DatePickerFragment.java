@@ -2,7 +2,9 @@ package nl.mprog.setup.mproject10173072;
 /*
  * DatePickerFragment is a dialog where 
  * the user can change the date of a 
- * particular task.
+ * particular task. The date is the send
+ * back to the TaskFragment to display
+ * the correct date on the button
  */
 
 import java.util.Calendar;
@@ -63,6 +65,7 @@ public class DatePickerFragment extends DialogFragment {
 	}
 	
 	// send data result back to TaskFragment
+	// so it can use it
 	private void sendResult(int resultCode){
 		if (getTargetFragment() == null)
 			return;

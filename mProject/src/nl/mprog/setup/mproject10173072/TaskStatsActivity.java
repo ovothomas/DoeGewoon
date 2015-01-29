@@ -23,7 +23,7 @@ public class TaskStatsActivity extends Activity {
 		setContentView(R.layout.activity_list_stats);
 		
 		this.mListView = (ListView)findViewById(R.id.list_stats);
-		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 164, 9, 9)));
+		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 0, 0, 0)));
 		
 		// connect with the database and set the adapter to it
 		// by getting the completed task

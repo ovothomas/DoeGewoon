@@ -1,7 +1,9 @@
 package nl.mprog.setup.mproject10173072;
 /*
- * This Activity is openen when a task
- * is being created.
+ * This Activity is opened when a task
+ * is being freshly created. Some button
+ * are disabled as it is not important
+ * in this particular fragment
  */
 
 import java.text.ParseException;
@@ -36,26 +38,6 @@ public class NewTaskFragment extends Fragment {
 	private TaskDataBase mDatabase;
 	Calendar calendar = Calendar.getInstance(); 
 	
-	// method to add a task to database
-	// by getting the necessary information
-	// formating the date and converting 
-	// ischecked from a boolean to an integer
-	private void addTask(){
-		Editable taskTitle =  mTaskTitle.getText();
-		Editable taskDetails = mTaskDetails.getText();
-		int taskCompleted = mTaskCompletedCheckBox.isChecked() == true ? 1:0;
-		String dateString = mTaskDateButton.getText().toString();
-		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
-		try {
-			sdf.parse(dateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		long time = sdf.getCalendar().getTimeInMillis();
-		mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time, taskCompleted);	
-		getActivity().finish();		 	
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,6 +98,26 @@ public class NewTaskFragment extends Fragment {
 		NewTaskFragment fragment = new NewTaskFragment();
 		fragment.setArguments(args);
 		return fragment;	
+	}
+	
+	// function to add a task to database
+	// by getting the necessary information
+	// formating the date and converting 
+	// ischecked from a boolean to an integer
+	private void addTask(){
+		Editable taskTitle =  mTaskTitle.getText();
+		Editable taskDetails = mTaskDetails.getText();
+		int taskCompleted = mTaskCompletedCheckBox.isChecked() == true ? 1:0;
+		String dateString = mTaskDateButton.getText().toString();
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
+		try {
+			sdf.parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		long time = sdf.getCalendar().getTimeInMillis();
+		mDatabase.createTask(taskTitle.toString(), taskDetails.toString(), time, taskCompleted);	
+		getActivity().finish();		 	
 	}
 	
 	@Override
