@@ -34,15 +34,17 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TaskListActivity" />
+                android:value=".TaskUncompletedListActivity" />
         </activity>
         <activity
             android:name=".TaskStatsActivity"
-            android:label="@string/title_activity_task_stats" >
+            android:label="@string/title_activity_task_stats"
+            android:screenOrientation="portrait"  >
         </activity>
         <activity
             android:name=".TaskCompletedListActivity"
-            android:label="@string/title_activity_task_stats" >
+            android:label="@string/title_activity_task_stats"
+            android:screenOrientation="portrait"  >
         </activity>
     </application>
 

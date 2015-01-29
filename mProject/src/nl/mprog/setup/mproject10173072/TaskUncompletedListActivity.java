@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +20,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class TaskUncompletedListActivity extends Activity implements android.widget.AdapterView.OnItemLongClickListener, android.widget.AdapterView.OnItemClickListener{
+	
+	// variables
 	public final String TAG = "TaskListActivity";
 	private List<Task> mListTasks;
 	private TaskDataBase mDatabase;
@@ -31,16 +32,16 @@ public class TaskUncompletedListActivity extends Activity implements android.wid
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_task_list);
 		
-		//configuring the actionbar
+		//configuring the actionbar and setting background color
 		getActionBar().setTitle(R.string.task_title);
-		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 164, 9, 9)));
+		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 0, 0, 0)));
 		
 		//Initialize view
 		initViews();
 		
 		// open database and set the listadapter to display tasks in it
 		mDatabase= new TaskDataBase(this);
-		mListTasks = mDatabase.getUncompletedTask();
+		mListTasks = mDatabase.getUncompletedTasks();
 		mAdapter = new TaskUncompletedListAdapter(this, mListTasks, mDatabase);
 		mListView.setAdapter(mAdapter);
 		mAdapter.notifyDataSetChanged();
@@ -56,7 +57,7 @@ public class TaskUncompletedListActivity extends Activity implements android.wid
 	@Override
 	public void onResume(){
 		super.onResume();
-		mListTasks = mDatabase.getUncompletedTask();
+		mListTasks = mDatabase.getUncompletedTasks();
 		mAdapter.setItems(mListTasks);
 		mAdapter.notifyDataSetChanged();
 	}
@@ -73,7 +74,8 @@ public class TaskUncompletedListActivity extends Activity implements android.wid
 		// enabling the actionbar to add tasks to the lists
 		int id = item.getItemId();
 		if (id == R.id.action_add_new_task) {
-			createTask();
+			Intent i = new Intent(this, TaskActivity.class);
+			startActivity(i);
 			return true;
 		} else if (id == R.id.see_stats){
 			Intent intent = new Intent(this, TaskStatsActivity.class);
@@ -85,13 +87,7 @@ public class TaskUncompletedListActivity extends Activity implements android.wid
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	// create Task function
-	public void createTask(){
-		Intent i = new Intent(this, TaskActivity.class);
-		startActivity(i);
-	}
-	
+
 	// method to delete task from the list using a dailog
 	private void showDeleteDialogConfirmation(final Task task){
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -117,7 +113,6 @@ public class TaskUncompletedListActivity extends Activity implements android.wid
         alertDialogBuilder.setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// Dismiss the dialog
                 dialog.dismiss();
 			}
 		});
@@ -132,7 +127,6 @@ public class TaskUncompletedListActivity extends Activity implements android.wid
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 		int position, long id) {
 		Task task = mAdapter.getItem(position);
-		Log.d(TAG, "longClickdItem : " + task.getTaskTitle());
 		showDeleteDialogConfirmation(task);
 		return true;
 	}
@@ -140,8 +134,8 @@ public class TaskUncompletedListActivity extends Activity implements android.wid
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		
 		Task task = mAdapter.getItem(position);
-		Log.d(TAG, "clickedItem : " + task.getTaskTitle());
 		
 		//Start TaskpagerActivity and putExtra Id of the particular fragment
 		Intent i = new Intent(this, TaskPagerActivity.class);
@@ -151,6 +145,7 @@ public class TaskUncompletedListActivity extends Activity implements android.wid
 		startActivity(i);
 	}
 	
+	// close database
 	@Override
 	public void onDestroy(){
 		super.onDestroy();

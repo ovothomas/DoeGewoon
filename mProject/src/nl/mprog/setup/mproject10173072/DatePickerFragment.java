@@ -19,7 +19,7 @@ import android.widget.DatePicker;
 public class DatePickerFragment extends DialogFragment { 
 	public static final String EXTRA_DATE = 
 			"nl.mprog.setup.mproject10173072.date";
-	
+
 	// variables
 	private long mDate;
 	private int mYear, mMonth, mDay;
@@ -27,6 +27,7 @@ public class DatePickerFragment extends DialogFragment {
 	// stash date in an argument bundle where the DatePickerFragment can
 	// access it
 	public static DatePickerFragment newInstance(long l){
+		
 		Bundle args = new Bundle();
 		args.putSerializable(EXTRA_DATE, l);
 		DatePickerFragment fragment = new DatePickerFragment();
@@ -65,10 +66,8 @@ public class DatePickerFragment extends DialogFragment {
 	private void sendResult(int resultCode){
 		if (getTargetFragment() == null)
 			return;
-		
 		Intent i = new Intent();
 		i.putExtra(EXTRA_DATE, mDate);
-		
 		getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, i);
 	}
 }

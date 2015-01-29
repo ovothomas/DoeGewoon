@@ -4,19 +4,13 @@
     android:layout_height="match_parent"
     android:background ="#A40909" >
     
-     <Button 
+     <TextView 
         android:id="@+id/task_stats_date"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textColor="#000000"/>
-     
-     <TextView 
-        android:id="@+id/task_stats_view"
-		android:layout_width="wrap_content"
-		android:layout_height="match_parent"
-		android:layout_toRightOf="@id/task_stats_date"
-		android:layout_marginLeft="20dp"
 		android:textColor="#000000"
-		android:textSize="20sp"/>
+		android:textSize="20dp"/>
+     
+    
      
 </RelativeLayout>

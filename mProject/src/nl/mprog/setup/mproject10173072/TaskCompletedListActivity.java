@@ -20,6 +20,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 public class TaskCompletedListActivity extends Activity implements OnItemLongClickListener{
+	
 	// variables
 	private List<Task>	mCompletedListTasks;
 	private TaskDataBase mDatabase;
@@ -30,9 +31,9 @@ public class TaskCompletedListActivity extends Activity implements OnItemLongCli
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_task_list);
 		
-		//configure the actionbar
-		getActionBar().setTitle(R.string.task_title);
-		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 164, 9, 9)));
+		//configure the actionbar, set title and background color
+		getActionBar().setTitle(R.string.see_completed);
+		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(255, 0, 0, 0)));
 		
 		// Initiate the views
 		initViews();
@@ -66,6 +67,7 @@ public class TaskCompletedListActivity extends Activity implements OnItemLongCli
 		mAdapter.notifyDataSetChanged();
 	}
 	
+	// close database
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
@@ -97,7 +99,6 @@ public class TaskCompletedListActivity extends Activity implements OnItemLongCli
         alertDialogBuilder.setNeutralButton(android.R.string.no, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// Dismiss the dialog
                 dialog.dismiss();
 			}
 		});

@@ -24,7 +24,6 @@ import android.widget.EditText;
 
 public class TaskFragment extends Fragment {
 	public static final String TAG = "AddTaskActivity";
-	public static final String TAG1 = "Listtask";
 	public static final String EXTRA_TASK_ID =
 			"nl.mprog.setup.mproject10173072.task_id";
 	public static final String DPDIALOG_DATE = "date";
@@ -42,6 +41,7 @@ public class TaskFragment extends Fragment {
 	// SQL Database
 	private TaskDataBase mDatabase;
 	
+	// update the changed date
 	private void updateDate(){
 		mTaskDateButton.setText(DateFormat.format("EEEE, MMM dd, yyyy",mTask.getTaskDate()));
 	}
@@ -60,7 +60,7 @@ public class TaskFragment extends Fragment {
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);	
 	}
 	
-	// Inflate the layout view
+	// Inflate the layout view and the widgets
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
@@ -75,16 +75,14 @@ public class TaskFragment extends Fragment {
 		mTaskTitle = (EditText)view.findViewById(R.id.task_title);
 		mTaskTitle.setText(mTask.getTaskTitle());
 		
-		//Setting and wiring completed checkbox
+		//Setting and wiring completed checkbox and convert boolean to an integer
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
 		mTaskCompletedCheckBox.setChecked(mTask.getCompleted() == 1 ? true : false);
 		mTaskCompletedCheckBox.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				mTask.setCompleted(mTaskCompletedCheckBox.isChecked() == true ? 1 : 0);
-				Log.d(TAG, "added company : " + mTask.getCompleted());
 			}
 		});
 		 
@@ -169,7 +167,7 @@ public class TaskFragment extends Fragment {
 		
 		// getting the variables to store
 		Long taskId = (Long)getArguments().getSerializable(EXTRA_TASK_ID);
-    	String taskTitle =  mTaskTitle.getText().toString();
+		String taskTitle =  mTaskTitle.getText().toString();
 		String taskDetails = mTaskDetails.getText().toString();
 		int taskCompleted = mTask.getCompleted();
 		String dateString = mTaskDateButton.getText().toString();

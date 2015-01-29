@@ -14,10 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class StatsListAdapter extends BaseAdapter {
+public class TaskStatsListAdapter extends BaseAdapter {
 	Context context;
 	Calendar calendar = Calendar.getInstance(); 
 	
@@ -25,7 +24,7 @@ public class StatsListAdapter extends BaseAdapter {
 	private List<Date> mItems;
 	private LayoutInflater mInflater;
 	
-	public StatsListAdapter(Context context, List<Date> listDates) {
+	public TaskStatsListAdapter(Context context, List<Date> listDates) {
 		this.setItems(listDates);
 		this.mInflater = LayoutInflater.from(context);
 	}
@@ -40,19 +39,15 @@ public class StatsListAdapter extends BaseAdapter {
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null){
-			convertView = mInflater.inflate(R.layout.activity_task_stats, parent, false);	
+			convertView = mInflater.inflate(R.layout.activity_task_stats_row, parent, false);	
 		}
 		
 		// get item position
 		Date currentItem = getItem(position);
-		
 		//look for the view to populate with data
-		Button buttonDate = (Button)convertView.findViewById(R.id.task_stats_date);
-		TextView tvCount = (TextView)convertView.findViewById(R.id.task_stats_view);
-		 
+		TextView tvDate = (TextView)convertView.findViewById(R.id.task_stats_date);
 		// Populate the data into the template view using the data object
-		buttonDate.setText(DateFormat.format("EEEE, MMM dd, yyyy",currentItem.getTaskDate()));
-		tvCount.setText(String.valueOf(currentItem.getCount()));
+		tvDate.setText(DateFormat.format("EEEE, MMM dd, yyyy",currentItem.getTaskDate()) + "  :  " + String.valueOf(currentItem.getCount()));
 		
 		return convertView;
 	}

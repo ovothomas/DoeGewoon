@@ -7,5 +7,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/Minor/Desktop/Api Parse/bolts-android-1.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/Minor/Desktop/Api Parse/Parse-1.8.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Minor/Downloads/androidplot-core-0.6.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

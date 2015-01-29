@@ -61,13 +61,13 @@ public class TaskCompletedListAdapter extends BaseAdapter {
 		TextView tvDate = (TextView)convertView.findViewById(R.id.task_dateTextView);
 		CheckBox checkBox = (CheckBox)convertView.findViewById(R.id.task_completed_checkbox);
 		
-		// Populate the data into the template view using the data object
+		// Populate the data into the view using the data object
 		tvTitle.setText(currentItem.getTaskTitle());
 		tvDate.setText(DateFormat.format("EEEE, MMM dd, yyyy", currentItem.getTaskDate()));
 		checkBox.setChecked(currentItem.getCompleted() != 0);
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
-			// when the tasks is unchecked the task is removed from the list
+			// when a task is unchecked the task is removed from the list and updated in the database
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {

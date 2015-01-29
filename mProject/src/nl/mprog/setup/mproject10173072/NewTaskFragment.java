@@ -18,16 +18,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class NewTaskFragment extends Fragment {
-	
 	public static final String TAG = "AddTaskActivity";
 	public static final String TAG1 = "Listtask";
 	
 	public static final String EXTRA_TASK_ID =
 			"nl.mprog.setup.mproject10173072.task_id";
-	
-	public static final String DPDIALOG_DATE = "date";
-	public static final String DPDIALOG_TIME = "time";
-	public static final int REQUEST_DATE = 0;
 	
 	// member variable for Task
 	private EditText mTaskTitle;
@@ -36,13 +31,15 @@ public class NewTaskFragment extends Fragment {
 	private Button mAddTask;
 	private Button mSendButton;
 	private CheckBox mTaskCompletedCheckBox;
-	private Task mTask;
 	
 	// SQL Database
 	private TaskDataBase mDatabase;
 	Calendar calendar = Calendar.getInstance(); 
 	
 	// method to add a task to database
+	// by getting the necessary information
+	// formating the date and converting 
+	// ischecked from a boolean to an integer
 	private void addTask(){
 		Editable taskTitle =  mTaskTitle.getText();
 		Editable taskDetails = mTaskDetails.getText();
@@ -52,7 +49,6 @@ public class NewTaskFragment extends Fragment {
 		try {
 			sdf.parse(dateString);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long time = sdf.getCalendar().getTimeInMillis();
@@ -79,21 +75,13 @@ public class NewTaskFragment extends Fragment {
 		//Wiring up the edittext to respond to user input
 		mTaskTitle = (EditText)view.findViewById(R.id.task_title);
 		
-		// since we are saving in database we cannot save the checkbox 
-		// as a boolean so we convert boolean to an integer
+		// In the new TaskFragment the user cannot complete his task so
+		// the button is disabled
 		mTaskCompletedCheckBox = (CheckBox)view.findViewById(R.id.task_completed);
-		mTaskCompletedCheckBox.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mTask.setCompleted(mTaskCompletedCheckBox.isChecked() == true ? 1 : 0);
-				
-			}
-		});
+		mTaskCompletedCheckBox.setEnabled(false);
 		
 		// Setting and wiring the date button to show date in custom format
-		// when the task is being created at first
+		// when the task is being created at first. Button shows only the date
 		mTaskDateButton = (Button)view.findViewById(R.id.task_date);
 		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM dd, yyyy");
 		String dateString = sdf.format(calendar.getTimeInMillis());   
