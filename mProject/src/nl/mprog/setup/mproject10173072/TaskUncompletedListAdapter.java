@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class TaskUncompletedListAdapter extends BaseAdapter {
@@ -60,27 +58,26 @@ public class TaskUncompletedListAdapter extends BaseAdapter {
 		//look for the view to populate with data
 		TextView tvTitle = (TextView)convertView.findViewById(R.id.task_titleTextView);
 		TextView tvDate = (TextView)convertView.findViewById(R.id.task_dateTextView);
-		CheckBox checkBox = (CheckBox)convertView.findViewById(R.id.task_completed_checkbox);
+		final CheckBox checkBox = (CheckBox)convertView.findViewById(R.id.task_completed_checkbox);
 		
 		// Populate the data into the template view using the data object
 		tvTitle.setText(currentItem.getTaskTitle());
 		tvDate.setText(DateFormat.format("EEEE, MMM dd, yyyy", currentItem.getTaskDate()));
-		checkBox.setChecked(currentItem.getCompleted() != 0);
-		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-
-			// when the task is checked removed from list
+		checkBox.setChecked(currentItem.getCompleted() == 1 ? true : false);
+		checkBox.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				currentItem.setCompleted(isChecked ? 1 : 0);
+			public void onClick(View v) {
+				currentItem.setCompleted(checkBox.isChecked() == true ? 1 : 0);
 				mDatabase.updateTaskById(currentItem.getId(), currentItem.getTaskTitle(), currentItem.getTaskDetails()
 						, currentItem.getTaskDate(), currentItem.getCompleted());
-				if (isChecked) {
+				if (checkBox.isChecked() == true) {
 					mItems.remove(currentItem);
 					notifyDataSetChanged();
-				}
-			}	
+				}		
+			}
 		});
+		
 		return convertView;
 	}
 	
