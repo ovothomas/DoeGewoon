@@ -17,7 +17,6 @@ import android.util.Log;
 
 public class TaskDataBase {
 	
-	//for logging
 	private static final String TAG = "TaskDatabase";
 	private SQLiteDatabase mDatabase;
 	private TaskDataBaseHelper mTaskDataBaseHelper;
@@ -76,7 +75,6 @@ public class TaskDataBase {
 	// function to deletask in the database
 	public void deleteTask(Task task){
 		long id = task.getId();
-		System.out.println("the deleted company has the id: " + id);
 		mDatabase.delete(TaskDataBaseHelper.TABLE_TASK, TaskDataBaseHelper.COLUMN_TASK_ID
 				+ " = " + id, null);
 	}
@@ -101,8 +99,8 @@ public class TaskDataBase {
 	}
 	
 	// get uncompleted Tasks
-	public List<Task> getUncompletedTask(){
-		List<Task> listUncompletedTask = new ArrayList<Task>();
+	public List<Task> getUncompletedTasks(){
+		List<Task> listUncompletedTasks = new ArrayList<Task>();
 		
 		Cursor cursor = mDatabase.query(TaskDataBaseHelper.TABLE_TASK, mAllColumns, 
 				TaskDataBaseHelper.COLUMN_TASK_COMPLETED + " = ?",
@@ -111,14 +109,14 @@ public class TaskDataBase {
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()){
 				Task task = cursorToTask(cursor);
-				listUncompletedTask.add(task);
+				listUncompletedTasks.add(task);
 				cursor.moveToNext();	
 			}
 			
 			// make sure to close cursor
 			cursor.close();
 		}
-		return listUncompletedTask;
+		return listUncompletedTasks;
 	}
 				
 	// get all the tasks
@@ -141,12 +139,13 @@ public class TaskDataBase {
 		return completedTasks;		
 	}
 	
-	// get completed tasks
+	// get completed tasks grouped by date
 	public List<Date> getCountCompleted(){
 		List<Date> getCountDate = new ArrayList<Date>();
 		
-		Cursor cursor = mDatabase.rawQuery("SELECT COUNT( " + TaskDataBaseHelper.COLUMN_TASK_DATE + "), " +  TaskDataBaseHelper.COLUMN_TASK_DATE +  " FROM " + TaskDataBaseHelper.TABLE_TASK + " WHERE " 
-		+ TaskDataBaseHelper.COLUMN_TASK_COMPLETED + " = ? GROUP BY " + TaskDataBaseHelper.COLUMN_TASK_DATE, new String[] { "1" });
+		Cursor cursor = mDatabase.rawQuery("SELECT COUNT( " + TaskDataBaseHelper.COLUMN_TASK_DATE + "), " +  TaskDataBaseHelper.COLUMN_TASK_DATE 
+				+  " FROM " + TaskDataBaseHelper.TABLE_TASK + " WHERE " + TaskDataBaseHelper.COLUMN_TASK_COMPLETED + " = ? GROUP BY " 
+				+ TaskDataBaseHelper.COLUMN_TASK_DATE, new String[] { "1" });
 		
 		if (cursor != null){
 			cursor.moveToFirst();
@@ -156,7 +155,7 @@ public class TaskDataBase {
 				cursor.moveToNext();	
 			}
 			
-			// make sure to close cursor
+			// close the cursor
 			cursor.close();
 		}
 		return getCountDate;	
@@ -196,6 +195,7 @@ public class TaskDataBase {
 		task.setTaskDetails(cursor.getString(2));
 		task.setTaskDate(cursor.getLong(3));
 		task.setCompleted(cursor.getInt(4));
+		
 		return task;
 	}	
 	
@@ -204,6 +204,7 @@ public class TaskDataBase {
 		Date date = new Date();
 		date.setCount(cursor.getInt(0));
 		date.setTaskDate(cursor.getLong(1));
+		
 		return date;
 	}
 }

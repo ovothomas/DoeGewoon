@@ -15,7 +15,9 @@ public class TaskDataBaseHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_TASK_DATE = "date";
 	public static final String COLUMN_TASK_COMPLETED = "completed";
 	public static final String DATABASE_NAME = "taskdatabase.db";
-	public static final int DATABASE_VERSION = 6   ;
+	public static final int DATABASE_VERSION = 6;
+	
+	// create sql table
 	public static final String SQL_CREATE_TABLE_TASKS = " CREATE TABLE " + TABLE_TASK + 
 			"(" + COLUMN_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TITLE + 
 			" TEXT NOT NULL, " + COLUMN_TASK_DETAILS + " TEXT NOT NULL,"+ COLUMN_TASK_DATE + 
@@ -27,13 +29,11 @@ public class TaskDataBaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// TODO Auto-generated method stub
 		db.execSQL(SQL_CREATE_TABLE_TASKS);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
 		db.execSQL("DROP TABLE IF EXISTS" + TABLE_TASK);
 		
 		onCreate(db);	

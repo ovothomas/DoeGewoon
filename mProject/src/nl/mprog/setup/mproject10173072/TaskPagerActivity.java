@@ -56,6 +56,7 @@ public class TaskPagerActivity extends FragmentActivity {
 		});
 		
 		Long taskId = (Long)getIntent().getSerializableExtra(TaskFragment.EXTRA_TASK_ID);
+		
 		// loop through the arraylist of tasks and 
 		// check the id of each task. when the id matches
 		// that of the intent extra, set the item to the 
@@ -67,7 +68,7 @@ public class TaskPagerActivity extends FragmentActivity {
 			}
 		}
 		
-		// See the title of the task on the action bar
+		// Setting the title of the task on the action bar
 		mTaskViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			public void onPageScrollStateChanged(int state) { }
 	

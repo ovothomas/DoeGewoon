@@ -27,6 +27,7 @@ public class TaskActivity extends FragmentActivity {
 	}
 	
 	protected Fragment createFragment() {
+		
 		//retrieve the extra from CrimeActivity's intent 
 		//and pass it into CrimeFragment.newInstance(UUID).
 		Long taskId = (Long)getIntent().getSerializableExtra(NewTaskFragment.EXTRA_TASK_ID);
